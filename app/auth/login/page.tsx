@@ -12,6 +12,33 @@ import { t } from '@/lib/i18n';
 import { Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+const loginCopy = {
+  en: {
+    welcome: 'Welcome back to your fitness journey',
+    signingIn: 'Signing in...',
+    or: 'or',
+    google: 'Continue with Google',
+    soon: 'Coming soon',
+    unknownError: 'An error occurred',
+  },
+  fr: {
+    welcome: 'Bon retour dans votre parcours fitness',
+    signingIn: 'Connexion...',
+    or: 'ou',
+    google: 'Continuer avec Google',
+    soon: 'Bientôt disponible',
+    unknownError: 'Une erreur est survenue',
+  },
+  ar: {
+    welcome: 'مرحباً بعودتك إلى رحلتك الصحية',
+    signingIn: 'جارٍ تسجيل الدخول...',
+    or: 'أو',
+    google: 'المتابعة عبر Google',
+    soon: 'قريباً',
+    unknownError: 'حدث خطأ',
+  },
+} as const;
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,6 +49,7 @@ export default function LoginPage() {
   const [showTooltip, setShowTooltip] = useState(false);
   const router = useRouter();
   const { language } = useLanguage();
+  const copy = loginCopy[language];
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +62,7 @@ export default function LoginPage() {
       if (error) throw error;
       router.push('/dashboard');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : copy.unknownError);
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +74,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold text-[#1A6BFF]">Progressi</h1>
-          <p className="text-muted-foreground mt-2">Welcome back to your fitness journey</p>
+          <p className="text-muted-foreground mt-2">{copy.welcome}</p>
         </div>
 
         <motion.div
@@ -131,7 +159,7 @@ export default function LoginPage() {
                 disabled={isLoading}
                 className="w-full gradient-btn py-3 rounded-xl"
               >
-                {isLoading ? 'Signing in...' : t(language, 'auth.signIn')}
+                {isLoading ? copy.signingIn : t(language, 'auth.signIn')}
               </Button>
             </motion.div>
 
@@ -141,7 +169,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-xs text-muted-foreground">
-                <span className="px-3 bg-background">or</span>
+                <span className="px-3 bg-background">{copy.or}</span>
               </div>
             </div>
 
@@ -173,11 +201,11 @@ export default function LoginPage() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                Continue with Google
+                {copy.google}
               </Button>
               {showTooltip && (
                 <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs rounded-lg whitespace-nowrap z-10">
-                  Coming soon
+                  {copy.soon}
                   <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
                 </div>
               )}

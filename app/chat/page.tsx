@@ -12,7 +12,7 @@ import { useRequireAuth } from '@/hooks/use-require-auth';
 import { useLanguage } from '@/hooks/use-language';
 import { computeBodyMetrics } from '@/lib/health-metrics';
 import { localDateString } from '@/lib/utils';
-import { t } from '@/lib/i18n';
+import { t, type Language } from '@/lib/i18n';
 
 type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snacks';
 
@@ -85,6 +85,12 @@ interface DailyWellness {
 
 const mealTypes: MealType[] = ['breakfast', 'lunch', 'dinner', 'snacks'];
 
+const chatCopy: Record<Language, Record<string, string>> = {
+  en: { intro: 'Describe meals, log exercise, or ask about your body. Parsed entries are editable before they save to your log.', loggedToday: 'Logged today', kcalConsumed: 'kcal consumed', quickPrompts: 'Quick prompts', todaysIntake: "Today's intake", noFood: 'No food logged yet today.', addSteps: 'Add steps', conversation: 'Conversation', oneThread: 'Meals, hydration, steps, and training in one thread', coachable: 'Describe the day like a coachable log', receipts: 'Meals become editable receipts. Water and steps stay visible in the sidebar.', mealReceipt: 'Meal Receipt', saved: 'Saved', saving: 'Saving...', saveToday: 'Save To Today', exerciseDraft: 'Exercise Draft' },
+  fr: { intro: 'Décrivez vos repas, enregistrez vos exercices ou posez une question sur votre corps. Les éléments détectés restent modifiables avant enregistrement.', loggedToday: "Enregistré aujourd'hui", kcalConsumed: 'kcal consommées', quickPrompts: 'Prompts rapides', todaysIntake: "Apport d'aujourd'hui", noFood: "Aucun aliment enregistré aujourd'hui.", addSteps: 'Ajouter des pas', conversation: 'Conversation', oneThread: 'Repas, hydratation, pas et entraînement dans un seul fil', coachable: 'Décrivez la journée comme un journal coachable', receipts: "Les repas deviennent des fiches modifiables. L'eau et les pas restent visibles sur le côté.", mealReceipt: 'Fiche repas', saved: 'Enregistré', saving: 'Enregistrement...', saveToday: "Enregistrer aujourd'hui", exerciseDraft: "Brouillon d'exercice" },
+  ar: { intro: 'صف وجباتك أو سجل تمرينك أو اسأل عن جسمك. العناصر المستخرجة تبقى قابلة للتعديل قبل حفظها.', loggedToday: 'المسجل اليوم', kcalConsumed: 'سعرة مستهلكة', quickPrompts: 'اقتراحات سريعة', todaysIntake: 'استهلاك اليوم', noFood: 'لا يوجد طعام مسجل اليوم.', addSteps: 'أضف خطوات', conversation: 'المحادثة', oneThread: 'الوجبات والترطيب والخطوات والتمرين في محادثة واحدة', coachable: 'صف يومك كأنه سجل قابل للتوجيه', receipts: 'تتحول الوجبات إلى بطاقات قابلة للتعديل، مع بقاء الماء والخطوات ظاهرة في الجانب.', mealReceipt: 'بطاقة الوجبة', saved: 'تم الحفظ', saving: 'جارٍ الحفظ...', saveToday: 'احفظ لليوم', exerciseDraft: 'مسودة تمرين' },
+};
+
 function parseBlock<T>(content: string, tag: string): T[] | null {
   const match = content.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`));
   if (!match) return null;
@@ -152,6 +158,7 @@ function TypingIndicator() {
 export default function ChatPage() {
   const { user, isLoading: authLoading, supabase } = useRequireAuth();
   const { language } = useLanguage();
+  const copy = chatCopy[language];
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -369,13 +376,13 @@ export default function ChatPage() {
                 {t(language, 'chat.title')}
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">
-                Describe meals, log exercise, or ask about your body. Parsed entries are editable before they save to your log.
+                {copy.intro}
               </p>
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-[1.4rem] border border-blue-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">Logged today</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">{copy.loggedToday}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{Math.round(caloriesToday)}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">kcal consumed</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcalConsumed}</p>
                 </div>
                 <div className="rounded-[1.4rem] border border-cyan-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-600">Water</p>
@@ -397,7 +404,7 @@ export default function ChatPage() {
                   <MascotRobot size={170} />
                 </div>
                 <div className="space-y-3">
-                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">Quick prompts</p>
+                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">{copy.quickPrompts}</p>
                   {quickQuestions.slice(0, 3).map((question) => (
                     <button
                       key={question}
@@ -421,12 +428,12 @@ export default function ChatPage() {
 
             {/* Today's intake */}
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Today's intake</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.todaysIntake}</p>
               <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">{Math.round(caloriesToday)} kcal logged</h2>
               <div className="mt-4 space-y-2">
                 {todayLogs.length === 0 ? (
                   <p className="rounded-[1.1rem] border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400">
-                    No food logged yet today.
+                    {copy.noFood}
                   </p>
                 ) : (
                   todayLogs.map((log) => (
@@ -475,7 +482,7 @@ export default function ChatPage() {
               <div className="mt-4 flex gap-2">
                 <Input
                   type="number"
-                  placeholder="Add steps"
+                  placeholder={copy.addSteps}
                   value={stepInput}
                   onChange={(e) => setStepInput(e.target.value)}
                   onKeyDown={(e) => {
@@ -508,16 +515,16 @@ export default function ChatPage() {
           {/* Chat window */}
           <div className="rounded-[2rem] border border-white/70 bg-white/84 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5 flex flex-col">
             <div className="border-b border-white/60 px-5 py-4 dark:border-white/10">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">Conversation</p>
-              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">Meals, hydration, steps, and training in one thread</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">{copy.conversation}</p>
+              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">{copy.oneThread}</h2>
             </div>
             <div className="max-h-[68vh] overflow-y-auto px-4 py-5 md:px-6">
               {messages.length === 0 ? (
                 <div className="flex min-h-[40vh] flex-col items-center justify-center text-center">
                   <MascotRobot size={90} />
-                  <h3 className="mt-5 text-2xl font-extrabold text-slate-900 dark:text-white">Describe the day like a coachable log</h3>
+                  <h3 className="mt-5 text-2xl font-extrabold text-slate-900 dark:text-white">{copy.coachable}</h3>
                   <p className="mt-3 max-w-lg text-sm leading-6 text-slate-500 dark:text-slate-400">
-                    Meals become editable receipts. Water and steps stay visible in the sidebar.
+                    {copy.receipts}
                   </p>
                 </div>
               ) : (
@@ -534,12 +541,12 @@ export default function ChatPage() {
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
                                 <Apple size={16} />
-                                <span className="text-sm font-semibold">Meal Receipt</span>
+                                <span className="text-sm font-semibold">{copy.mealReceipt}</span>
                               </div>
                               {message.foodDraftApplied ? (
                                 <div className="flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
                                   <CheckCircle2 size={14} />
-                                  Saved
+                                  {copy.saved}
                                 </div>
                               ) : (
                                 <button onClick={() => setMessages((prev) => prev.map((m) => (m.id === message.id ? { ...m, foodDraft: null } : m)))} className="rounded-full p-2 text-slate-500 hover:bg-white/60 dark:hover:bg-white/8">
@@ -589,7 +596,7 @@ export default function ChatPage() {
                               </div>
                               {!message.foodDraftApplied && (
                                 <Button onClick={() => applyFoodDraft(message.id, message.foodDraft || [])} disabled={applyingFood === message.id} className="rounded-full bg-emerald-600 text-white hover:bg-emerald-700">
-                                  {applyingFood === message.id ? 'Saving...' : 'Save To Today'}
+                                  {applyingFood === message.id ? copy.saving : copy.saveToday}
                                 </Button>
                               )}
                             </div>
@@ -600,7 +607,7 @@ export default function ChatPage() {
                           <div className="rounded-[1.5rem] border border-violet-500/20 bg-violet-500/5 p-4">
                             <div className="flex items-center gap-2 text-violet-600 dark:text-violet-300">
                               <Dumbbell size={16} />
-                              <span className="text-sm font-semibold">Exercise Draft</span>
+                              <span className="text-sm font-semibold">{copy.exerciseDraft}</span>
                             </div>
                             <div className="mt-3 space-y-2">
                               {message.exerciseDraft.map((item, index) => (

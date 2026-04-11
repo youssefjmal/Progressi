@@ -60,16 +60,17 @@ export function calcStepSuggestion(
   targetCalories: number,
   activityLevel: string,
   bmi: number,
-  direction: 'lose' | 'maintain',
+  direction: 'lose' | 'maintain' | 'gain',
 ) {
   const base = ACTIVITY_BASE_STEPS[activityLevel] ?? 7500;
   const deficit = tdee - targetCalories;
   const extraStepsForDeficit = direction === 'lose' ? Math.round((deficit * 0.25) / 0.04) : 0;
+  const reducedStepsForSurplus = direction === 'gain' ? 500 : 0;
   const bmiBump = bmi >= 30 ? 500 : bmi >= 25 ? 1000 : 0;
 
-  const recommended = Math.round((base + extraStepsForDeficit + bmiBump) / 500) * 500;
+  const recommended = Math.round((base + extraStepsForDeficit + bmiBump - reducedStepsForSurplus) / 500) * 500;
   const minimum = Math.round(base / 500) * 500;
-  const optimal = Math.round((recommended + 2000) / 500) * 500;
+  const optimal = Math.round((recommended + (direction === 'gain' ? 1500 : 2000)) / 500) * 500;
 
   return {
     minimum: Math.min(Math.max(minimum, 3000), 15000),
@@ -98,14 +99,28 @@ export function computeBodyMetrics(inputs: BodyInputs) {
   const bmi = Number((currentWeight / Math.pow(height / 100, 2)).toFixed(1));
   const bmr = calcBMR(currentWeight, height, age, gender);
   const tdee = calcTDEE(bmr, safeActivityLevel);
-  const direction: 'lose' | 'maintain' = goalWeight && goalWeight < currentWeight ? 'lose' : 'maintain';
-  const deficit = DEFICIT_PER_RATE[safeWeightLossRate] ?? 550;
-  const targetCalories = direction === 'lose' ? Math.max(1200, Math.round(tdee - deficit)) : Math.round(tdee);
+  const direction: 'lose' | 'maintain' | 'gain' =
+    goalWeight == null
+      ? 'maintain'
+      : goalWeight < currentWeight
+      ? 'lose'
+      : goalWeight > currentWeight
+      ? 'gain'
+      : 'maintain';
+  const calorieAdjustment = DEFICIT_PER_RATE[safeWeightLossRate] ?? 550;
+  const targetCalories =
+    direction === 'lose'
+      ? Math.max(1200, Math.round(tdee - calorieAdjustment))
+      : direction === 'gain'
+      ? Math.round(tdee + calorieAdjustment)
+      : Math.round(tdee);
   const protein = Math.round((targetCalories * 0.3) / 4);
   const carbs = Math.round((targetCalories * 0.4) / 4);
   const fat = Math.round((targetCalories * 0.3) / 9);
   const weeksToGoal =
-    goalWeight && goalWeight < currentWeight ? Math.ceil((currentWeight - goalWeight) / safeWeightLossRate) : null;
+    goalWeight && goalWeight !== currentWeight
+      ? Math.ceil(Math.abs(currentWeight - goalWeight) / safeWeightLossRate)
+      : null;
   const hydrationTargetMl = calcHydrationTargetMl(currentWeight, safeActivityLevel);
   const steps = calcStepSuggestion(tdee, targetCalories, safeActivityLevel, bmi, direction);
 

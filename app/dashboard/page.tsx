@@ -23,7 +23,7 @@ import { computeBodyMetrics, getExerciseIntensity } from '@/lib/health-metrics';
 import { localDateString } from '@/lib/utils';
 import { useLanguage } from '@/hooks/use-language';
 import { useRequireAuth } from '@/hooks/use-require-auth';
-import { localeForLanguage } from '@/lib/i18n';
+import { localeForLanguage, type Language } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MascotRunner } from '@/components/mascots/mascot';
@@ -96,9 +96,16 @@ function ProgressBar({ label, value, color, icon: Icon }: { label: string; value
   );
 }
 
+const dashboardCopy: Record<Language, Record<string, string>> = {
+  en: { todayCompletion: "Today's completion", hydration: 'Hydration', steps: 'Steps', calorieTarget: 'Calorie target', addSteps: 'Add steps', macroSplit: 'Macro split', noFood: 'No food logged yet today.', last7: 'Last 7 days', inVsOut: 'Calories in vs calories burned', consumed: 'Consumed', burned: 'Burned', bodyStatus: 'Body status', glance: 'Today at a glance', fillProfile: 'fill profile', workoutIntensity: 'Workout intensity', none: 'None', entries: 'entries', netCalories: 'Net calories', aiCoach: 'AI Coach', dailyFeedback: 'Daily feedback', coachingReport: 'Get your AI coaching report', analyze: 'Analyzes your food, exercise, and wellness data to give you personalized insights.', generate: 'Generate feedback', feedbackError: "Couldn't load feedback. Check your connection and try again.", score: 'score', todaysTip: "Today's tip" },
+  fr: { todayCompletion: "Progression du jour", hydration: 'Hydratation', steps: 'Pas', calorieTarget: 'Objectif calorique', addSteps: 'Ajouter des pas', macroSplit: 'Répartition des macros', noFood: "Aucun aliment enregistré aujourd'hui.", last7: '7 derniers jours', inVsOut: 'Calories consommées vs brûlées', consumed: 'Consommées', burned: 'Brûlées', bodyStatus: 'État du corps', glance: "Vue d'ensemble du jour", fillProfile: 'compléter le profil', workoutIntensity: "Intensité d'entraînement", none: 'Aucune', entries: 'entrées', netCalories: 'Calories nettes', aiCoach: 'Coach IA', dailyFeedback: 'Retour quotidien', coachingReport: 'Obtenez votre rapport IA', analyze: 'Analyse vos repas, exercices et données bien-être pour fournir des conseils personnalisés.', generate: 'Générer', feedbackError: 'Impossible de charger le retour. Vérifiez la connexion et réessayez.', score: 'score', todaysTip: 'Conseil du jour' },
+  ar: { todayCompletion: 'تقدم اليوم', hydration: 'الترطيب', steps: 'الخطوات', calorieTarget: 'هدف السعرات', addSteps: 'أضف خطوات', macroSplit: 'توزيع المغذيات', noFood: 'لا يوجد طعام مسجل اليوم.', last7: 'آخر 7 أيام', inVsOut: 'السعرات الداخلة مقابل المحروقة', consumed: 'المستهلك', burned: 'المحروق', bodyStatus: 'حالة الجسم', glance: 'ملخص اليوم', fillProfile: 'أكمل الملف', workoutIntensity: 'شدة التمرين', none: 'لا يوجد', entries: 'إدخالات', netCalories: 'السعرات الصافية', aiCoach: 'المدرب الذكي', dailyFeedback: 'تقييم يومي', coachingReport: 'احصل على تقريرك الذكي', analyze: 'يحلل الطعام والتمارين وبيانات العافية ليعطيك ملاحظات مخصصة.', generate: 'إنشاء التقييم', feedbackError: 'تعذر تحميل التقييم. تحقق من الاتصال وحاول مرة أخرى.', score: 'النتيجة', todaysTip: 'نصيحة اليوم' },
+};
+
 export default function DashboardPage() {
   const { user, isLoading: authLoading, supabase } = useRequireAuth();
   const { language } = useLanguage();
+  const copy = dashboardCopy[language];
   const [profile, setProfile] = useState<Profile | null>(null);
   const [weightHistory, setWeightHistory] = useState<WeightEntry[]>([]);
   const [foodLogs, setFoodLogs] = useState<FoodLog[]>([]);
@@ -320,11 +327,11 @@ export default function DashboardPage() {
 
             {/* Goal completion */}
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Today's completion</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.todayCompletion}</p>
               <div className="mt-5 space-y-4">
-                <ProgressBar label="Hydration" value={Math.round((waterMl / waterGoal) * 100)} color="#06B6D4" icon={Droplets} />
-                <ProgressBar label="Steps" value={Math.round((stepCount / stepGoal) * 100)} color="#10B981" icon={Footprints} />
-                <ProgressBar label="Calorie target" value={Math.round((caloriesConsumed / calorieGoal) * 100)} color="#F59E0B" icon={Gauge} />
+                <ProgressBar label={copy.hydration} value={Math.round((waterMl / waterGoal) * 100)} color="#06B6D4" icon={Droplets} />
+                <ProgressBar label={copy.steps} value={Math.round((stepCount / stepGoal) * 100)} color="#10B981" icon={Footprints} />
+                <ProgressBar label={copy.calorieTarget} value={Math.round((caloriesConsumed / calorieGoal) * 100)} color="#F59E0B" icon={Gauge} />
               </div>
             </div>
 
@@ -361,7 +368,7 @@ export default function DashboardPage() {
               <div className="mt-4 flex gap-2">
                 <Input
                   type="number"
-                  placeholder="Add steps"
+                  placeholder={copy.addSteps}
                   value={stepInput}
                   onChange={(e) => setStepInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && addSteps()}
@@ -375,9 +382,9 @@ export default function DashboardPage() {
 
             {/* Macro split */}
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Macro split</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.macroSplit}</p>
               {macroData.length === 0 ? (
-                <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">No food logged yet today.</p>
+                <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">{copy.noFood}</p>
               ) : (
                 <div className="mt-4 space-y-3">
                   <div className="h-[160px]">
@@ -416,11 +423,11 @@ export default function DashboardPage() {
               transition={{ duration: 0.3 }}
               className="rounded-[2rem] border border-white/70 bg-white/84 p-6 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Last 7 days</p>
-              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">Calories in vs calories burned</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.last7}</p>
+              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">{copy.inVsOut}</h2>
               <div className="mt-2 flex items-center gap-5 text-xs text-slate-500">
-                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-[#1A6BFF]" />Consumed</span>
-                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-violet-500" />Burned</span>
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-[#1A6BFF]" />{copy.consumed}</span>
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-violet-500" />{copy.burned}</span>
               </div>
               <div className="mt-4">
                 <ResponsiveContainer width="100%" height={260}>
@@ -476,13 +483,13 @@ export default function DashboardPage() {
               transition={{ duration: 0.3, delay: 0.08 }}
               className="rounded-[2rem] border border-white/70 bg-white/84 p-6 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Body status</p>
-              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">Today at a glance</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.bodyStatus}</p>
+              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">{copy.glance}</h2>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 {[
-                  { label: 'BMI', value: computed?.bmi ?? '—', sub: computed?.bmiCategory.label ?? 'fill profile', color: computed?.bmiCategory.color ?? '#94A3B8' },
-                  { label: 'Workout intensity', value: averageIntensity?.label ?? 'None', sub: `${todayExercise.length} entries`, color: '#8B5CF6' },
-                  { label: 'Net calories', value: netCalories.toString(), sub: `vs ${calorieGoal} kcal goal`, color: netCalories > calorieGoal ? '#EF4444' : '#10B981' },
+                  { label: 'BMI', value: computed?.bmi ?? '—', sub: computed?.bmiCategory.label ?? copy.fillProfile, color: computed?.bmiCategory.color ?? '#94A3B8' },
+                  { label: copy.workoutIntensity, value: averageIntensity?.label ?? copy.none, sub: `${todayExercise.length} ${copy.entries}`, color: '#8B5CF6' },
+                  { label: copy.netCalories, value: netCalories.toString(), sub: `${calorieGoal} kcal goal`, color: netCalories > calorieGoal ? '#EF4444' : '#10B981' },
                 ].map((item) => (
                   <div key={item.label} className="rounded-[1.4rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(239,246,255,0.84))] p-4 dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(30,41,59,0.74),rgba(15,23,42,0.86))]">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{item.label}</p>
@@ -506,8 +513,8 @@ export default function DashboardPage() {
                     <Sparkles size={16} />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">AI Coach</p>
-                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Daily feedback</h2>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.aiCoach}</p>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">{copy.dailyFeedback}</h2>
                   </div>
                 </div>
                 <button
@@ -522,14 +529,14 @@ export default function DashboardPage() {
               {!aiFeedback && !isFeedbackLoading && !feedbackError && (
                 <div className="mt-5 rounded-[1.4rem] border border-dashed border-slate-300 bg-slate-50/80 p-6 text-center dark:border-white/10 dark:bg-white/5">
                   <Sparkles size={24} className="mx-auto text-slate-300 dark:text-slate-600" />
-                  <p className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-300">Get your AI coaching report</p>
-                  <p className="mt-1 text-xs text-slate-400">Analyzes your food, exercise, and wellness data to give you personalized insights.</p>
+                  <p className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-300">{copy.coachingReport}</p>
+                  <p className="mt-1 text-xs text-slate-400">{copy.analyze}</p>
                   <button
                     onClick={loadAiFeedback}
                     className="mt-4 inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#1A6BFF,#8B5CF6)] px-5 py-2 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(26,107,255,0.35)] transition hover:opacity-90"
                   >
                     <Sparkles size={14} />
-                    Generate feedback
+                    {copy.generate}
                   </button>
                 </div>
               )}
@@ -545,7 +552,7 @@ export default function DashboardPage() {
               {feedbackError && !isFeedbackLoading && (
                 <div className="mt-5 flex items-center gap-3 rounded-[1.2rem] border border-rose-200/60 bg-rose-50/60 px-4 py-3 dark:border-rose-500/20 dark:bg-rose-500/8">
                   <AlertCircle size={16} className="shrink-0 text-rose-500" />
-                  <p className="text-sm text-rose-600 dark:text-rose-300">Couldn't load feedback. Check your connection and try again.</p>
+                  <p className="text-sm text-rose-600 dark:text-rose-300">{copy.feedbackError}</p>
                 </div>
               )}
 
@@ -558,7 +565,7 @@ export default function DashboardPage() {
                       style={{ background: `linear-gradient(135deg, ${aiFeedback.scoreColor}, ${aiFeedback.scoreColor}99)` }}
                     >
                       <span className="text-2xl font-black leading-none">{aiFeedback.score}</span>
-                      <span className="text-[9px] font-bold uppercase tracking-wide opacity-80">score</span>
+                      <span className="text-[9px] font-bold uppercase tracking-wide opacity-80">{copy.score}</span>
                     </div>
                     <div>
                       <p className="text-sm font-bold" style={{ color: aiFeedback.scoreColor }}>{aiFeedback.scoreLabel}</p>
@@ -596,7 +603,7 @@ export default function DashboardPage() {
                   <div className="flex items-start gap-3 rounded-[1.2rem] border border-[#1A6BFF]/15 bg-[#1A6BFF]/5 p-4">
                     <Zap size={15} className="mt-0.5 shrink-0 text-[#1A6BFF]" />
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#1A6BFF]">Today's tip</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#1A6BFF]">{copy.todaysTip}</p>
                       <p className="mt-1 text-sm text-slate-700 dark:text-slate-300">{aiFeedback.tip}</p>
                     </div>
                   </div>

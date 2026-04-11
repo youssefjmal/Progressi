@@ -8,9 +8,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MascotLifter } from '@/components/mascots/mascot';
+import { useLanguage } from '@/hooks/use-language';
 import { useRequireAuth } from '@/hooks/use-require-auth';
 import { computeBodyMetrics, getExerciseIntensity } from '@/lib/health-metrics';
 import { localDateString } from '@/lib/utils';
+import type { Language } from '@/lib/i18n';
 import { Apple, ArrowUpRight, Dumbbell, Flame, Footprints, Plus, Scale, Timer, Trash2, Trophy } from 'lucide-react';
 
 const EXERCISES = [
@@ -128,8 +130,16 @@ interface FoodItem { id: string; name: string; calories: number; protein: number
 
 const categories = ['All', 'Cardio', 'Strength', 'Recovery', 'Sports'];
 
+const exerciseCopy: Record<Language, Record<string, string>> = {
+  en: { quickLog: 'Quick log', closeForm: 'Close form', logWorkout: 'Log a workout', searchExercise: 'Search exercise...', logging: 'Logging...', addLift: 'Add lift', addCardio: 'Add cardio', logFood: 'Log Food', searchFood: 'Search food...', noMatch: 'No match found', logged: 'Logged!', saving: 'Saving…', logToDiary: 'Log to food diary', steps: 'Steps', addSteps: 'Add steps...', add: 'Add', session: 'Session', history: "Today's workout history", entries: 'entries', noWorkouts: 'No workouts logged yet', firstEntry: 'Use the quick log panel to add your first entry.' },
+  fr: { quickLog: 'Journal rapide', closeForm: 'Fermer', logWorkout: 'Enregistrer une séance', searchExercise: 'Rechercher un exercice...', logging: 'Enregistrement...', addLift: 'Ajouter la série', addCardio: 'Ajouter le cardio', logFood: 'Journal alimentaire', searchFood: 'Rechercher un aliment...', noMatch: 'Aucun résultat', logged: 'Enregistré !', saving: 'Enregistrement…', logToDiary: 'Ajouter au journal', steps: 'Pas', addSteps: 'Ajouter des pas...', add: 'Ajouter', session: 'Séance', history: "Historique d'entraînement du jour", entries: 'entrées', noWorkouts: 'Aucune séance enregistrée', firstEntry: 'Utilisez le panneau rapide pour ajouter votre première entrée.' },
+  ar: { quickLog: 'تسجيل سريع', closeForm: 'إغلاق', logWorkout: 'سجل تمريناً', searchExercise: 'ابحث عن تمرين...', logging: 'جارٍ التسجيل...', addLift: 'أضف الرفعة', addCardio: 'أضف الكارديو', logFood: 'سجل الطعام', searchFood: 'ابحث عن طعام...', noMatch: 'لا توجد نتيجة', logged: 'تم التسجيل!', saving: 'جارٍ الحفظ…', logToDiary: 'أضف لسجل الطعام', steps: 'الخطوات', addSteps: 'أضف خطوات...', add: 'إضافة', session: 'الجلسة', history: 'سجل تمارين اليوم', entries: 'إدخالات', noWorkouts: 'لا توجد تمارين مسجلة بعد', firstEntry: 'استخدم لوحة التسجيل السريع لإضافة أول تمرين.' },
+};
+
 export default function ExercisePage() {
   const { user, isLoading: authLoading, supabase } = useRequireAuth();
+  const { language } = useLanguage();
+  const copy = exerciseCopy[language];
   const [profile, setProfile] = useState<Profile | null>(null);
   const [logs, setLogs] = useState<ExerciseLog[]>([]);
   const [dailyWellness, setDailyWellness] = useState<DailyWellness | null>(null);
@@ -361,12 +371,12 @@ export default function ExercisePage() {
 
             {/* Log workout */}
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-600">Quick log</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-600">{copy.quickLog}</p>
               <Button
                 onClick={() => setShowForm((p) => !p)}
                 className="mt-3 h-12 w-full justify-between rounded-[1rem] bg-violet-600 text-white hover:bg-violet-700"
               >
-                {showForm ? 'Close form' : 'Log a workout'}
+                {showForm ? copy.closeForm : copy.logWorkout}
                 <Plus size={16} />
               </Button>
 
@@ -388,7 +398,7 @@ export default function ExercisePage() {
                           </button>
                         ))}
                       </div>
-                      <Input placeholder="Search exercise..." value={searchEx} onChange={(e) => setSearchEx(e.target.value)} className="input-glow rounded-xl" />
+                      <Input placeholder={copy.searchExercise} value={searchEx} onChange={(e) => setSearchEx(e.target.value)} className="input-glow rounded-xl" />
                       <div className="max-h-44 space-y-1 overflow-y-auto">
                         {filteredExercises.map((ex) => (
                           <button key={ex.name} type="button" onClick={() => setSelectedExercise(ex)}
@@ -429,7 +439,7 @@ export default function ExercisePage() {
                       )}
 
                       <Button onClick={handleAdd} disabled={isAdding} className="h-11 w-full rounded-2xl bg-violet-600 text-white hover:bg-violet-700">
-                        {isAdding ? 'Logging...' : isStrengthExercise ? 'Add lift' : 'Add cardio'}
+                        {isAdding ? copy.logging : isStrengthExercise ? copy.addLift : copy.addCardio}
                       </Button>
                     </div>
                   </motion.div>
@@ -441,14 +451,14 @@ export default function ExercisePage() {
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
               <div className="flex items-center gap-2">
                 <Apple size={15} className="text-emerald-500" />
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">Log Food</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">{copy.logFood}</p>
               </div>
               <div className="mt-3 space-y-2.5">
                 {/* Food search */}
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search food..."
+                    placeholder={copy.searchFood}
                     value={quickFoodSearch}
                     onChange={(e) => { setQuickFoodSearch(e.target.value); setQuickFoodSelected(null); }}
                     className="h-9 w-full rounded-xl border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#1A6BFF]/25"
@@ -469,7 +479,7 @@ export default function ExercisePage() {
                       </button>
                     ))}
                     {foods.filter((f) => f.name.toLowerCase().includes(quickFoodSearch.toLowerCase())).length === 0 && (
-                      <p className="px-3 py-2 text-sm text-muted-foreground">No match found</p>
+                      <p className="px-3 py-2 text-sm text-muted-foreground">{copy.noMatch}</p>
                     )}
                   </div>
                 )}
@@ -504,14 +514,14 @@ export default function ExercisePage() {
                   disabled={!quickFoodSelected || isQuickLogging}
                   className={`h-9 w-full rounded-xl text-sm ${quickFoodLogged ? 'bg-green-600 hover:bg-green-600' : 'bg-emerald-600 hover:bg-emerald-700'} text-white`}
                 >
-                  {quickFoodLogged ? 'Logged!' : isQuickLogging ? 'Saving…' : 'Log to food diary'}
+                  {quickFoodLogged ? copy.logged : isQuickLogging ? copy.saving : copy.logToDiary}
                 </Button>
               </div>
             </div>
 
             {/* Steps */}
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">Steps</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">{copy.steps}</p>
               <div className="mt-3 flex items-center justify-between">
                 <div>
                   <p className="text-2xl font-black text-slate-950 dark:text-white">{currentSteps.toLocaleString()}</p>
@@ -523,10 +533,10 @@ export default function ExercisePage() {
                 <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${Math.min((currentSteps / stepGoal) * 100, 100)}%` }} />
               </div>
               <div className="mt-3 flex gap-2">
-                <Input type="number" placeholder="Add steps..." value={stepInput} onChange={(e) => setStepInput(e.target.value)} className="input-glow h-9 flex-1 rounded-xl text-sm" />
+                <Input type="number" placeholder={copy.addSteps} value={stepInput} onChange={(e) => setStepInput(e.target.value)} className="input-glow h-9 flex-1 rounded-xl text-sm" />
                 <Button variant="outline" disabled={isSavingWellness} onClick={() => { const v = parseInt(stepInput, 10); if (!Number.isFinite(v)) return; upsertWellness({ step_count: Math.max(0, currentSteps + v) }); setStepInput(''); }}
                   className="h-9 rounded-xl border-slate-200/80 px-3 hover:border-emerald-500 hover:text-emerald-600 dark:border-white/10">
-                  Add
+                  {copy.add}
                 </Button>
               </div>
             </div>
@@ -561,11 +571,11 @@ export default function ExercisePage() {
             <section className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5 sm:p-6">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Session</p>
-                  <h2 className="mt-1 text-xl font-bold text-slate-950 dark:text-white">Today&apos;s workout history</h2>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">{copy.session}</p>
+                  <h2 className="mt-1 text-xl font-bold text-slate-950 dark:text-white">{copy.history}</h2>
                 </div>
                 <span className="rounded-full border border-slate-200/80 bg-white/90 px-3 py-1.5 text-sm font-bold text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
-                  {logs.length} entries
+                  {logs.length} {copy.entries}
                 </span>
               </div>
 
@@ -573,8 +583,8 @@ export default function ExercisePage() {
                 {logs.length === 0 ? (
                   <div className="rounded-[1.3rem] border border-dashed border-slate-300 bg-slate-50/80 px-5 py-10 text-center dark:border-white/10 dark:bg-white/5">
                     <Dumbbell size={24} className="mx-auto mb-3 text-slate-400" />
-                    <p className="text-base font-semibold text-slate-900 dark:text-white">No workouts logged yet</p>
-                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Use the quick log panel to add your first entry.</p>
+                    <p className="text-base font-semibold text-slate-900 dark:text-white">{copy.noWorkouts}</p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{copy.firstEntry}</p>
                   </div>
                 ) : (
                   <AnimatePresence initial={false}>

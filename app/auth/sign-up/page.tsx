@@ -39,6 +39,99 @@ const ACTIVITY_FACTORS: Record<string, number> = {
   veryActive: 1.725,
 };
 
+const signUpCopy: Record<Language, {
+  stepAccount: string;
+  stepBody: string;
+  stepGoals: string;
+  fillAll: string;
+  passwordMismatch: string;
+  passwordShort: string;
+  completeSelections: string;
+  unknownError: string;
+  bodyProfile: string;
+  age: string;
+  unitKg: string;
+  unitCm: string;
+  activityAndGoals: string;
+  activityDescriptions: Record<'sedentary' | 'lightlyActive' | 'moderatelyActive' | 'veryActive', string>;
+  kcalDay: string;
+  formula: string;
+  creating: string;
+}> = {
+  en: {
+    stepAccount: 'Account',
+    stepBody: 'Body Profile',
+    stepGoals: 'Goals',
+    fillAll: 'Please fill in all fields.',
+    passwordMismatch: 'Passwords do not match.',
+    passwordShort: 'Password must be at least 6 characters.',
+    completeSelections: 'Please complete all selections.',
+    unknownError: 'An error occurred',
+    bodyProfile: 'Body Profile',
+    age: 'Age',
+    unitKg: 'kg',
+    unitCm: 'cm',
+    activityAndGoals: 'Activity and Goals',
+    activityDescriptions: {
+      sedentary: 'Desk job, little exercise',
+      lightlyActive: '1-3 days/week',
+      moderatelyActive: '3-5 days/week',
+      veryActive: '6-7 days/week',
+    },
+    kcalDay: 'kcal/day',
+    formula: 'Calculated using Mifflin-St Jeor formula',
+    creating: 'Creating account...',
+  },
+  fr: {
+    stepAccount: 'Compte',
+    stepBody: 'Profil corporel',
+    stepGoals: 'Objectifs',
+    fillAll: 'Veuillez remplir tous les champs.',
+    passwordMismatch: 'Les mots de passe ne correspondent pas.',
+    passwordShort: 'Le mot de passe doit contenir au moins 6 caractères.',
+    completeSelections: 'Veuillez compléter toutes les sélections.',
+    unknownError: 'Une erreur est survenue',
+    bodyProfile: 'Profil corporel',
+    age: 'Âge',
+    unitKg: 'kg',
+    unitCm: 'cm',
+    activityAndGoals: 'Activité et objectifs',
+    activityDescriptions: {
+      sedentary: "Travail assis, peu d'exercice",
+      lightlyActive: '1-3 jours/semaine',
+      moderatelyActive: '3-5 jours/semaine',
+      veryActive: '6-7 jours/semaine',
+    },
+    kcalDay: 'kcal/jour',
+    formula: 'Calculé avec la formule de Mifflin-St Jeor',
+    creating: 'Création du compte...',
+  },
+  ar: {
+    stepAccount: 'الحساب',
+    stepBody: 'بيانات الجسم',
+    stepGoals: 'الأهداف',
+    fillAll: 'يرجى ملء جميع الحقول.',
+    passwordMismatch: 'كلمتا المرور غير متطابقتين.',
+    passwordShort: 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.',
+    completeSelections: 'يرجى إكمال جميع الاختيارات.',
+    unknownError: 'حدث خطأ',
+    bodyProfile: 'بيانات الجسم',
+    age: 'العمر',
+    unitKg: 'كغ',
+    unitCm: 'سم',
+    activityAndGoals: 'النشاط والأهداف',
+    activityDescriptions: {
+      sedentary: 'عمل مكتبي ونشاط قليل',
+      lightlyActive: '1-3 أيام في الأسبوع',
+      moderatelyActive: '3-5 أيام في الأسبوع',
+      veryActive: '6-7 أيام في الأسبوع',
+    },
+    kcalDay: 'سعرة/يوم',
+    formula: 'تم الحساب باستخدام معادلة ميفلين سانت جيور',
+    creating: 'جارٍ إنشاء الحساب...',
+  },
+};
+
 function calculateAge(dob: string): number {
   if (!dob) return 0;
   const today = new Date();
@@ -99,6 +192,7 @@ export default function SignUpPage() {
   });
 
   const lang = appLanguage;
+  const copy = signUpCopy[lang];
 
   function update<K extends keyof FormData>(key: K, value: FormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -110,21 +204,21 @@ export default function SignUpPage() {
 
     if (step === 1) {
       if (!form.firstName || !form.lastName || !form.email || !form.password) {
-        setError('Please fill in all fields.');
+        setError(copy.fillAll);
         return;
       }
       if (form.password !== form.confirmPassword) {
-        setError('Passwords do not match.');
+        setError(copy.passwordMismatch);
         return;
       }
       if (form.password.length < 6) {
-        setError('Password must be at least 6 characters.');
+        setError(copy.passwordShort);
         return;
       }
       setStep(2);
     } else if (step === 2) {
       if (!form.dateOfBirth || !form.gender || !form.currentWeight || !form.height || !form.goalWeight) {
-        setError('Please fill in all fields.');
+        setError(copy.fillAll);
         return;
       }
       setStep(3);
@@ -136,7 +230,7 @@ export default function SignUpPage() {
     setError(null);
 
     if (!form.activityLevel || !form.primaryGoal) {
-      setError('Please complete all selections.');
+      setError(copy.completeSelections);
       return;
     }
 
@@ -175,7 +269,7 @@ export default function SignUpPage() {
       localStorage.setItem('language', form.language);
       router.push('/auth/sign-up-success');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : copy.unknownError);
     } finally {
       setIsLoading(false);
     }
@@ -208,9 +302,9 @@ export default function SignUpPage() {
             />
           </div>
           <div className="flex justify-between text-xs text-muted-foreground mt-2">
-            <span className={step >= 1 ? 'text-[#1A6BFF] font-medium' : ''}>Account</span>
-            <span className={step >= 2 ? 'text-[#1A6BFF] font-medium' : ''}>Body Profile</span>
-            <span className={step >= 3 ? 'text-[#1A6BFF] font-medium' : ''}>Goals</span>
+            <span className={step >= 1 ? 'text-[#1A6BFF] font-medium' : ''}>{copy.stepAccount}</span>
+            <span className={step >= 2 ? 'text-[#1A6BFF] font-medium' : ''}>{copy.stepBody}</span>
+            <span className={step >= 3 ? 'text-[#1A6BFF] font-medium' : ''}>{copy.stepGoals}</span>
           </div>
         </div>
 
@@ -340,7 +434,7 @@ export default function SignUpPage() {
                 transition={{ duration: 0.3 }}
               >
                 <form onSubmit={handleNext} className="space-y-5">
-                  <h2 className="text-xl font-bold text-foreground mb-2">Body Profile</h2>
+                  <h2 className="text-xl font-bold text-foreground mb-2">{copy.bodyProfile}</h2>
 
                   {/* Date of Birth */}
                   <div className="space-y-2">
@@ -357,7 +451,7 @@ export default function SignUpPage() {
                       />
                       {form.dateOfBirth && (
                         <span className="text-sm font-semibold text-[#1A6BFF] whitespace-nowrap">
-                          Age: {calculateAge(form.dateOfBirth)}
+                          {copy.age}: {calculateAge(form.dateOfBirth)}
                         </span>
                       )}
                     </div>
@@ -403,7 +497,7 @@ export default function SignUpPage() {
                         className="input-glow"
                         required
                       />
-                      <span className="text-xs text-muted-foreground">kg</span>
+                      <span className="text-xs text-muted-foreground">{copy.unitKg}</span>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="height">{t(lang, 'auth.height')}</Label>
@@ -419,7 +513,7 @@ export default function SignUpPage() {
                         className="input-glow"
                         required
                       />
-                      <span className="text-xs text-muted-foreground">cm</span>
+                      <span className="text-xs text-muted-foreground">{copy.unitCm}</span>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="goalWeight">{t(lang, 'auth.goalWeight')}</Label>
@@ -435,7 +529,7 @@ export default function SignUpPage() {
                         className="input-glow"
                         required
                       />
-                      <span className="text-xs text-muted-foreground">kg</span>
+                      <span className="text-xs text-muted-foreground">{copy.unitKg}</span>
                     </div>
                   </div>
 
@@ -472,7 +566,7 @@ export default function SignUpPage() {
                 transition={{ duration: 0.3 }}
               >
                 <form onSubmit={handleFinish} className="space-y-6">
-                  <h2 className="text-xl font-bold text-foreground mb-2">Activity and Goals</h2>
+                  <h2 className="text-xl font-bold text-foreground mb-2">{copy.activityAndGoals}</h2>
 
                   {/* Activity Level */}
                   <div className="space-y-2">
@@ -480,10 +574,10 @@ export default function SignUpPage() {
                     <div className="grid grid-cols-2 gap-3">
                       {(
                         [
-                          { key: 'sedentary', icon: Scale, desc: 'Desk job, little exercise' },
-                          { key: 'lightlyActive', icon: Activity, desc: '1-3 days/week' },
-                          { key: 'moderatelyActive', icon: Zap, desc: '3-5 days/week' },
-                          { key: 'veryActive', icon: Flame, desc: '6-7 days/week' },
+                          { key: 'sedentary', icon: Scale, desc: copy.activityDescriptions.sedentary },
+                          { key: 'lightlyActive', icon: Activity, desc: copy.activityDescriptions.lightlyActive },
+                          { key: 'moderatelyActive', icon: Zap, desc: copy.activityDescriptions.moderatelyActive },
+                          { key: 'veryActive', icon: Flame, desc: copy.activityDescriptions.veryActive },
                         ] as const
                       ).map(({ key, icon: Icon, desc }) => (
                         <motion.button
@@ -575,10 +669,10 @@ export default function SignUpPage() {
                       </p>
                       <p className="text-3xl font-extrabold text-[#1A6BFF]">
                         {calorieTarget.toLocaleString()}
-                        <span className="text-base font-normal text-muted-foreground ml-1">kcal/day</span>
+                        <span className="text-base font-normal text-muted-foreground ml-1">{copy.kcalDay}</span>
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Calculated using Mifflin-St Jeor formula
+                        {copy.formula}
                       </p>
                     </div>
                   )}
@@ -603,7 +697,7 @@ export default function SignUpPage() {
                       disabled={isLoading}
                       className="flex-1 gradient-btn rounded-xl"
                     >
-                      {isLoading ? 'Creating account...' : t(lang, 'auth.finish')}
+                      {isLoading ? copy.creating : t(lang, 'auth.finish')}
                     </Button>
                   </div>
                 </form>

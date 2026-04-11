@@ -9,7 +9,7 @@ import { WatermelonChart } from '@/components/charts/watermelon-chart';
 import { MascotEnergy } from '@/components/mascots/mascot';
 import { useLanguage } from '@/hooks/use-language';
 import { useRequireAuth } from '@/hooks/use-require-auth';
-import { localeForLanguage, t } from '@/lib/i18n';
+import { localeForLanguage, t, type Language } from '@/lib/i18n';
 import { computeBodyMetrics } from '@/lib/health-metrics';
 import { localDateString } from '@/lib/utils';
 
@@ -86,8 +86,15 @@ function StatCard({
   );
 }
 
+const caloriesCopy: Record<Language, Record<string, string>> = {
+  en: { showLess: '↑ Show less', showAll: '↓ Show all concepts', snapshot: "Today's energy snapshot", dailyGuidance: 'Daily guidance', hydration: 'Hydration', steps: 'Steps', completeProfile: 'Complete your profile to unlock personalised calorie, macro, and hydration targets based on your body metrics.' },
+  fr: { showLess: '↑ Voir moins', showAll: '↓ Voir tous les concepts', snapshot: "Aperçu énergétique du jour", dailyGuidance: 'Guidance du jour', hydration: 'Hydratation', steps: 'Pas', completeProfile: 'Complétez votre profil pour débloquer des objectifs personnalisés en calories, macros et hydratation.' },
+  ar: { showLess: '↑ عرض أقل', showAll: '↓ اعرض كل المفاهيم', snapshot: 'ملخص طاقة اليوم', dailyGuidance: 'إرشادات اليوم', hydration: 'الترطيب', steps: 'الخطوات', completeProfile: 'أكمل ملفك لفتح أهداف مخصصة للسعرات والمغذيات والترطيب حسب بيانات جسمك.' },
+};
+
 export default function CaloriesPage() {
   const { language } = useLanguage();
+  const copy = caloriesCopy[language];
   const { user, isLoading: authLoading, supabase } = useRequireAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [wellness, setWellness] = useState<DailyWellness | null>(null);
@@ -258,7 +265,7 @@ export default function CaloriesPage() {
                   onClick={() => setGuideExpanded((v) => !v)}
                   className="text-xs font-semibold text-[#1A6BFF] hover:underline"
                 >
-                  {guideExpanded ? '↑ Show less' : '↓ Show all concepts'}
+                  {guideExpanded ? copy.showLess : copy.showAll}
                 </button>
                 <button
                   onClick={dismissGuide}
@@ -330,7 +337,7 @@ export default function CaloriesPage() {
                 />
                 <div className="relative flex flex-col items-center">
                   <MascotEnergy size={160} />
-                  <p className="mt-2 text-sm font-semibold text-white/90">Today&apos;s energy snapshot</p>
+                  <p className="mt-2 text-sm font-semibold text-white/90">{copy.snapshot}</p>
                   <p className="text-xs text-white/45">
                     {new Date().toLocaleDateString(localeForLanguage(language), {
                       weekday: 'long', month: 'long', day: 'numeric',
@@ -445,12 +452,12 @@ export default function CaloriesPage() {
 
             {/* Daily guidance */}
             <div className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br from-sky-50/80 to-white/80 p-5 shadow-[0_30px_80px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/6 dark:from-sky-900/20 dark:to-slate-900/50">
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-sky-500">Daily guidance</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-sky-500">{copy.dailyGuidance}</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <div className="rounded-[1.4rem] border border-sky-200/60 bg-white/70 p-4 dark:border-sky-500/15 dark:bg-white/4">
                   <div className="flex items-center gap-2">
                     <GlassWater size={14} className="text-sky-500" />
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">Hydration</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{copy.hydration}</p>
                   </div>
                   <p className="mt-2 text-2xl font-black text-slate-950 dark:text-white">{(waterTargetMl / 1000).toFixed(1)} L</p>
                   <p className="text-xs text-slate-400">{(waterMl / 1000).toFixed(1)} L logged so far</p>
@@ -458,7 +465,7 @@ export default function CaloriesPage() {
                 <div className="rounded-[1.4rem] border border-emerald-200/60 bg-white/70 p-4 dark:border-emerald-500/15 dark:bg-white/4">
                   <div className="flex items-center gap-2">
                     <Footprints size={14} className="text-emerald-500" />
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">Steps</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{copy.steps}</p>
                   </div>
                   <p className="mt-2 text-2xl font-black text-slate-950 dark:text-white">{stepTarget.toLocaleString()}</p>
                   <p className="text-xs text-slate-400">{stepCount.toLocaleString()} tracked so far</p>
@@ -475,7 +482,7 @@ export default function CaloriesPage() {
             className="mt-5 flex items-start gap-3 rounded-[1.4rem] border border-amber-200 bg-amber-50/80 p-4 text-sm text-amber-700 backdrop-blur dark:border-amber-500/20 dark:bg-amber-500/8 dark:text-amber-300"
           >
             <TrendingUp size={16} className="mt-0.5 shrink-0" />
-            <span>Complete your profile to unlock personalised calorie, macro, and hydration targets based on your body metrics.</span>
+            <span>{copy.completeProfile}</span>
           </motion.div>
         )}
       </div>

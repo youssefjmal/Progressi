@@ -14,10 +14,44 @@ import { Label } from '@/components/ui/label';
 
 const supabase = createClient();
 
+const modalCopy = {
+  en: {
+    loginFailed: 'Login failed',
+    signupFailed: 'Signup failed',
+    signingIn: 'Signing in...',
+    creating: 'Creating account...',
+    checkEmail: 'Check your email!',
+    confirmationSent: 'We sent a confirmation link to',
+    confirmationAction: 'Click it to activate your account.',
+    backToSignIn: 'Back to Sign In',
+  },
+  fr: {
+    loginFailed: 'Échec de la connexion',
+    signupFailed: "Échec de l'inscription",
+    signingIn: 'Connexion...',
+    creating: 'Création du compte...',
+    checkEmail: 'Vérifiez votre e-mail !',
+    confirmationSent: 'Nous avons envoyé un lien de confirmation à',
+    confirmationAction: 'Cliquez dessus pour activer votre compte.',
+    backToSignIn: 'Retour à la connexion',
+  },
+  ar: {
+    loginFailed: 'فشل تسجيل الدخول',
+    signupFailed: 'فشل إنشاء الحساب',
+    signingIn: 'جارٍ تسجيل الدخول...',
+    creating: 'جارٍ إنشاء الحساب...',
+    checkEmail: 'تحقق من بريدك الإلكتروني',
+    confirmationSent: 'لقد أرسلنا رابط التأكيد إلى',
+    confirmationAction: 'اضغط عليه لتفعيل حسابك.',
+    backToSignIn: 'العودة إلى تسجيل الدخول',
+  },
+} as const;
+
 export function AuthModal() {
   const { isOpen, view, openLogin, openSignup, close } = useAuthModal();
   const { language } = useLanguage();
   const router = useRouter();
+  const copy = modalCopy[language];
 
   // Login state
   const [email, setEmail] = useState('');
@@ -45,7 +79,7 @@ export function AuthModal() {
       close();
       router.refresh();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      setError(err instanceof Error ? err.message : copy.loginFailed);
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +102,7 @@ export function AuthModal() {
       if (error) throw error;
       setSignupSuccess(true);
     } catch (err: unknown) {
-      setSignupError(err instanceof Error ? err.message : 'Signup failed');
+      setSignupError(err instanceof Error ? err.message : copy.signupFailed);
     } finally {
       setIsSigningUp(false);
     }
@@ -177,7 +211,7 @@ export function AuthModal() {
                   </div>
                 )}
                 <Button type="submit" disabled={isLoading} className="w-full gradient-btn rounded-xl">
-                  {isLoading ? 'Signing in...' : t(language, 'auth.signIn')}
+                  {isLoading ? copy.signingIn : t(language, 'auth.signIn')}
                 </Button>
                 <p className="text-center text-sm text-muted-foreground">
                   {t(language, 'auth.dontHave')}{' '}
@@ -238,7 +272,7 @@ export function AuthModal() {
                   </div>
                 )}
                 <Button type="submit" disabled={isSigningUp} className="w-full gradient-btn rounded-xl">
-                  {isSigningUp ? 'Creating account...' : t(language, 'auth.createAccount')}
+                  {isSigningUp ? copy.creating : t(language, 'auth.createAccount')}
                 </Button>
                 <p className="text-center text-sm text-muted-foreground">
                   {t(language, 'auth.alreadyHave')}{' '}
@@ -255,12 +289,12 @@ export function AuthModal() {
                 <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
                   <span className="text-3xl">✉️</span>
                 </div>
-                <h3 className="font-bold text-foreground mb-2">Check your email!</h3>
+                <h3 className="font-bold text-foreground mb-2">{copy.checkEmail}</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  We sent a confirmation link to <strong>{signupEmail}</strong>. Click it to activate your account.
+                  {copy.confirmationSent} <strong>{signupEmail}</strong>. {copy.confirmationAction}
                 </p>
                 <Button variant="outline" onClick={() => { openLogin(); reset(); }} className="rounded-xl">
-                  Back to Sign In
+                  {copy.backToSignIn}
                 </Button>
               </div>
             )}
