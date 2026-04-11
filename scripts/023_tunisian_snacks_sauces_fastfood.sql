@@ -1,0 +1,87 @@
+-- Tunisian biscuits, sauces, condiments, and fast food
+-- Run after 019_pre_deploy_fixes.sql (requires foods_name_uq unique constraint)
+
+INSERT INTO public.foods (name, calories, protein, carbs, fat, serving_size, serving_unit, category)
+VALUES
+
+  -- ── Tunisian / regional biscuits ──────────────────────────────────────────
+  ('Chocotom (Romy)',               520,  6.5, 61.0, 27.0,  35, 'g', 'Tunisian Snacks'),
+  ('Chocotom Smile',                515,  6.5, 62.0, 26.5,  35, 'g', 'Tunisian Snacks'),
+  ('Smile Biscuit Nature',          465,  7.0, 67.0, 18.0,  50, 'g', 'Tunisian Snacks'),
+  ('Smile Biscuit Chocolat',        475,  7.0, 65.0, 19.5,  50, 'g', 'Tunisian Snacks'),
+  ('Biscotto (Sotubi)',             430,  7.5, 70.0, 13.0,  50, 'g', 'Tunisian Snacks'),
+  ('Bastoncini Chocolat',           500,  7.0, 60.0, 25.0,  40, 'g', 'Tunisian Snacks'),
+  ('Margherita Vanille',            435,  6.5, 68.0, 15.0,  50, 'g', 'Tunisian Snacks'),
+  ('Margherita Chocolat',           445,  6.5, 67.0, 16.5,  50, 'g', 'Tunisian Snacks'),
+  ('Ringo (Mondelez)',              480,  5.5, 66.0, 21.0,  55, 'g', 'Tunisian Snacks'),
+  ('Chamonix (LU)',                 400,  4.5, 65.0, 13.5,  34, 'g', 'Tunisian Snacks'),
+  ('Napolitain Chocolat (LU)',      445,  5.5, 64.0, 18.5,  30, 'g', 'Tunisian Snacks'),
+  ('LU Petit Écolier Chocolat',    490,  6.5, 64.0, 22.0,  50, 'g', 'Tunisian Snacks'),
+  ('Granola Chocolat (LU)',         460,  7.0, 63.0, 19.5,  45, 'g', 'Tunisian Snacks'),
+  ('Pépito Chocolat (LU)',          490,  6.0, 63.0, 23.0,  50, 'g', 'Tunisian Snacks'),
+  ('Oreo Original',                 471,  5.0, 67.0, 20.5,  44, 'g', 'Tunisian Snacks'),
+  ('Oreo Chocolat Double',          482,  5.5, 66.0, 22.0,  44, 'g', 'Tunisian Snacks'),
+  ('Digestive McVitie\'s Nature',   471,  7.5, 62.0, 20.5,  58, 'g', 'Tunisian Snacks'),
+  ('Digestive McVitie\'s Chocolat', 487,  6.5, 62.0, 23.0,  50, 'g', 'Tunisian Snacks'),
+  ('Leibniz Butter Biscuit',        490,  8.0, 69.0, 19.5,  50, 'g', 'Tunisian Snacks'),
+  ('Ritz Crackers',                 500,  7.5, 64.0, 23.5,  30, 'g', 'Tunisian Snacks'),
+  ('Grany Fruits (LU)',             395,  5.5, 62.0, 13.5,  50, 'g', 'Tunisian Snacks'),
+  ('Cracotte Blé Complet',          375,  9.5, 70.0,  5.0,  25, 'g', 'Tunisian Snacks'),
+  ('Madeleine Brossard',            400,  5.5, 52.0, 19.0,  30, 'g', 'Tunisian Snacks'),
+  ('Nutella B-ready',               540,  9.0, 61.0, 28.0,  44, 'g', 'Tunisian Snacks'),
+  ('Kinder Cards',                  536,  9.5, 60.0, 28.5,  25, 'g', 'Tunisian Snacks'),
+  ('Biscuit Cacao (Générique)',     440,  7.0, 68.0, 15.0,  50, 'g', 'Tunisian Snacks'),
+  ('Wafer Vanille (Générique)',     490,  5.5, 63.0, 24.0,  35, 'g', 'Tunisian Snacks'),
+  ('Wafer Fraise (Générique)',      485,  5.5, 64.0, 23.5,  35, 'g', 'Tunisian Snacks'),
+
+  -- ── Mayonnaise & condiment sauces ─────────────────────────────────────────
+  ('Mayonnaise (générique)',        680,  1.0,  1.5, 75.0,  15, 'g', 'Sauces & Condiments'),
+  ('Mayonnaise Zouina',             670,  1.0,  2.0, 74.0,  15, 'g', 'Sauces & Condiments'),
+  ('Mayonnaise Reine',              660,  1.0,  2.5, 73.0,  15, 'g', 'Sauces & Condiments'),
+  ('Sauce Algérienne',              380,  1.5,  8.0, 37.0,  15, 'g', 'Sauces & Condiments'),
+  ('Sauce Burger',                  360,  1.5,  9.5, 35.0,  20, 'g', 'Sauces & Condiments'),
+  ('Sauce Blanche (Kebab)',         330,  1.5,  5.5, 33.0,  20, 'g', 'Sauces & Condiments'),
+  ('Sauce Samouraï',                420,  1.0,  7.0, 42.0,  20, 'g', 'Sauces & Condiments'),
+  ('Sauce Barbecue',                120,  0.8, 28.0,  0.5,  20, 'g', 'Sauces & Condiments'),
+  ('Ketchup Heinz',                 112,  1.5, 26.0,  0.0,  20, 'g', 'Sauces & Condiments'),
+  ('Moutarde (générique)',           66,  4.0,  6.0,  3.5,  10, 'g', 'Sauces & Condiments'),
+  ('Harissa (tube)',                  45,  2.0,  7.5,  1.0,  15, 'g', 'Sauces & Condiments'),
+  ('Sauce Tomate (cuisinée)',         50,  1.5,  9.0,  1.0, 100, 'g', 'Sauces & Condiments'),
+  ('Vinaigre Blanc',                  5,  0.0,  0.5,  0.0,  15, 'ml', 'Sauces & Condiments'),
+
+  -- ── Tunisian fast food / street food ──────────────────────────────────────
+  -- Makloub = Tunisian stuffed sandwich (mlawi/baguette + egg + tuna + frites + harissa + olives)
+  ('Makloub (sandwich complet)',    620, 22.0, 60.0, 31.0, 200, 'g', 'Tunisian Fast Food'),
+  ('Makloub Thon',                  580, 24.0, 58.0, 27.0, 190, 'g', 'Tunisian Fast Food'),
+  ('Makloub Merguez',               650, 24.0, 58.0, 34.0, 200, 'g', 'Tunisian Fast Food'),
+  ('Makloub Poulet',                600, 26.0, 58.0, 28.0, 195, 'g', 'Tunisian Fast Food'),
+  ('Kapchichi (sandwich mashed potato)', 540, 15.0, 65.0, 24.0, 200, 'g', 'Tunisian Fast Food'),
+  ('Sandwich Merguez (baguette)',   490, 20.0, 48.0, 22.0, 180, 'g', 'Tunisian Fast Food'),
+  ('Sandwich Kafteji',              460, 16.0, 46.0, 22.0, 180, 'g', 'Tunisian Fast Food'),
+  ('Sandwich Thon Harissa',         410, 22.0, 44.0, 15.0, 170, 'g', 'Tunisian Fast Food'),
+  ('Sandwich Poulet Frites',        520, 26.0, 52.0, 21.0, 200, 'g', 'Tunisian Fast Food'),
+  ('Sandwich Escalope Frites',      560, 28.0, 55.0, 24.0, 210, 'g', 'Tunisian Fast Food'),
+  ('Shawarma Poulet (wrap)',        450, 28.0, 42.0, 18.0, 180, 'g', 'Tunisian Fast Food'),
+  ('Shawarma Bœuf (wrap)',          490, 26.0, 42.0, 22.0, 185, 'g', 'Tunisian Fast Food'),
+  ('Tacos Tunisien (viande hachée)', 580, 28.0, 55.0, 27.0, 230, 'g', 'Tunisian Fast Food'),
+  ('Hot Dog Tunisien',              430, 15.0, 48.0, 19.0, 170, 'g', 'Tunisian Fast Food'),
+  ('Burger Tunisien (maison)',       550, 28.0, 44.0, 28.0, 220, 'g', 'Tunisian Fast Food'),
+  ('Burger Poulet Frit (fast food)', 520, 26.0, 46.0, 24.0, 200, 'g', 'Tunisian Fast Food'),
+  ('Pizza Tunisienne (1 part)',      280, 14.0, 32.0, 11.0, 120, 'g', 'Tunisian Fast Food'),
+  ('Pizza Thon Harissa (1 part)',    265, 14.5, 31.0,  9.5, 120, 'g', 'Tunisian Fast Food'),
+  ('Panini Fromage Jambon',         380, 18.0, 38.0, 16.0, 160, 'g', 'Tunisian Fast Food'),
+  ('Panini Poulet',                 360, 22.0, 38.0, 13.0, 155, 'g', 'Tunisian Fast Food'),
+  ('Frites (portion fast food)',    310,  4.0, 40.0, 15.0, 120, 'g', 'Tunisian Fast Food'),
+  ('Fricassé Merguez',              420, 16.0, 40.0, 21.0, 150, 'g', 'Tunisian Fast Food'),
+  ('Fricassé Thon Complet',         400, 18.0, 40.0, 18.0, 145, 'g', 'Tunisian Fast Food'),
+  ('Ojja Merguez (restaurant)',     230, 14.0,  8.0, 16.0, 150, 'g', 'Tunisian Fast Food'),
+  ('Lablebi (restaurant)',          310, 13.0, 42.0,  9.0, 280, 'g', 'Tunisian Fast Food')
+
+ON CONFLICT (name) DO UPDATE
+  SET calories     = EXCLUDED.calories,
+      protein      = EXCLUDED.protein,
+      carbs        = EXCLUDED.carbs,
+      fat          = EXCLUDED.fat,
+      serving_size = EXCLUDED.serving_size,
+      serving_unit = EXCLUDED.serving_unit,
+      category     = EXCLUDED.category;
