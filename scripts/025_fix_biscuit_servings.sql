@@ -6,7 +6,9 @@ UPDATE public.foods SET calories = 519, protein = 6.5, carbs = 63.0, fat = 27.0,
 UPDATE public.foods SET calories = 516, protein = 6.5, carbs = 64.0, fat = 26.5, serving_size = 100 WHERE name = 'Chocotom Smile';
 UPDATE public.foods SET calories = 465, protein = 7.0, carbs = 67.0, fat = 18.0, serving_size = 100 WHERE name = 'Smile Biscuit Nature';
 UPDATE public.foods SET calories = 475, protein = 7.0, carbs = 65.0, fat = 19.5, serving_size = 100 WHERE name = 'Smile Biscuit Chocolat';
-UPDATE public.foods SET calories = 430, protein = 7.5, carbs = 70.0, fat = 13.0, serving_size = 100 WHERE name = 'Biscotto (Sotubi)';
+UPDATE public.foods SET calories = 430, protein = 7.5, carbs = 70.0, fat = 13.0, serving_size = 100 WHERE name IN ('Biscotto (Saida)', 'Biscotto (Sotubi)');
+UPDATE public.foods SET name = 'Biscotto (Saida)' WHERE name = 'Biscotto (Sotubi)';
+UPDATE public.foods SET name = 'Sablito (Saida)' WHERE name = 'Sablito (Sotubi)';
 UPDATE public.foods SET calories = 500, protein = 7.0, carbs = 60.0, fat = 25.0, serving_size = 100 WHERE name = 'Bastoncini Chocolat';
 UPDATE public.foods SET calories = 435, protein = 6.5, carbs = 68.0, fat = 15.0, serving_size = 100 WHERE name = 'Margherita Vanille';
 UPDATE public.foods SET calories = 445, protein = 6.5, carbs = 67.0, fat = 16.5, serving_size = 100 WHERE name = 'Margherita Chocolat';
@@ -33,5 +35,5 @@ UPDATE public.foods SET calories = 485, protein = 5.5, carbs = 64.0, fat = 23.5,
 
 -- Add Sablito (missing from previous script)
 INSERT INTO public.foods (name, calories, protein, carbs, fat, serving_size, serving_unit, category)
-VALUES ('Sablito (Sotubi)', 519, 6.0, 65.0, 26.0, 100, 'g', 'Tunisian Snacks')
+VALUES ('Sablito (Saida)', 519, 6.0, 65.0, 26.0, 100, 'g', 'Tunisian Snacks')
 ON CONFLICT DO NOTHING;
