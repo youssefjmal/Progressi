@@ -267,7 +267,7 @@ export default function SignUpPage() {
 
       if (error) throw error;
       localStorage.setItem('language', form.language);
-      router.push('/auth/sign-up-success');
+      router.push('/calories');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : copy.unknownError);
     } finally {

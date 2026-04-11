@@ -100,7 +100,7 @@ export function AuthModal() {
         },
       });
       if (error) throw error;
-      setSignupSuccess(true);
+      router.push('/calories');
     } catch (err: unknown) {
       setSignupError(err instanceof Error ? err.message : copy.signupFailed);
     } finally {
