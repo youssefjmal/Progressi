@@ -11,7 +11,31 @@ import { Input } from '@/components/ui/input';
 import { useRequireAuth } from '@/hooks/use-require-auth';
 import { localDateString } from '@/lib/utils';
 import { useLanguage } from '@/hooks/use-language';
-import { t } from '@/lib/i18n';
+import { t, type Language } from '@/lib/i18n';
+
+const foodPageCopy: Record<Language, Record<string, string>> = {
+  en: {
+    heroHeading: 'A meal logger that is easier to scan and faster to use.',
+    heroSub: 'Review each meal, track macros, and add foods from your own catalog or USDA without fighting a cramped mobile layout.',
+    consumed: 'Consumed', kcalToday: 'kcal today',
+    remaining: 'Remaining', kcalLeft: 'kcal left',
+    logged: 'Logged', foodEntries: 'food entries',
+  },
+  fr: {
+    heroHeading: 'Un journal alimentaire plus simple à scanner et plus rapide à utiliser.',
+    heroSub: 'Consultez chaque repas, suivez les macros et ajoutez des aliments depuis votre catalogue ou USDA sans interface encombrée.',
+    consumed: 'Consommées', kcalToday: 'kcal aujourd\'hui',
+    remaining: 'Restant', kcalLeft: 'kcal restantes',
+    logged: 'Enregistré', foodEntries: 'aliments enregistrés',
+  },
+  ar: {
+    heroHeading: 'سجل وجباتك بسهولة وسرعة أكبر.',
+    heroSub: 'راجع كل وجبة وتابع المغذيات وأضف الأطعمة من قاعدة بياناتك أو USDA بدون تعقيد.',
+    consumed: 'المستهلك', kcalToday: 'سعرة اليوم',
+    remaining: 'المتبقي', kcalLeft: 'سعرة متبقية',
+    logged: 'المسجل', foodEntries: 'وجبات مسجلة',
+  },
+};
 import { MascotChef } from '@/components/mascots/mascot';
 
 interface Food {
@@ -76,6 +100,7 @@ function ProgressRow({ label, current, target, color }: { label: string; current
 export default function FoodPage() {
   const { user, isLoading: authLoading, supabase } = useRequireAuth();
   const { language } = useLanguage();
+  const copy = foodPageCopy[language];
   const [foods, setFoods] = useState<Food[]>([]);
   const [loggedFoods, setLoggedFoods] = useState<LoggedFood[]>([]);
   const [targets, setTargets] = useState<ProfileTargets | null>(null);
@@ -258,12 +283,12 @@ export default function FoodPage() {
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">{t(language, 'food.title')}</p>
-              <h1 className="mt-3 max-w-2xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">A meal logger that is easier to scan and faster to use.</h1>
-              <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">Review each meal, track macros, and add foods from your own catalog or USDA without fighting a cramped mobile layout.</p>
+              <h1 className="mt-3 max-w-2xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">{copy.heroHeading}</h1>
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">{copy.heroSub}</p>
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-[1.4rem] border border-blue-200/70 bg-white/88 p-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">Consumed</p><p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{Math.round(totals.calories)}</p><p className="text-sm text-slate-500 dark:text-slate-400">kcal today</p></div>
-                <div className="rounded-[1.4rem] border border-emerald-200/70 bg-white/88 p-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Remaining</p><p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{remaining}</p><p className="text-sm text-slate-500 dark:text-slate-400">kcal left</p></div>
-                <div className="rounded-[1.4rem] border border-violet-200/70 bg-white/88 p-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Logged</p><p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{loggedFoods.length}</p><p className="text-sm text-slate-500 dark:text-slate-400">food entries</p></div>
+                <div className="rounded-[1.4rem] border border-blue-200/70 bg-white/88 p-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">{copy.consumed}</p><p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{Math.round(totals.calories)}</p><p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcalToday}</p></div>
+                <div className="rounded-[1.4rem] border border-emerald-200/70 bg-white/88 p-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">{copy.remaining}</p><p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{remaining}</p><p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcalLeft}</p></div>
+                <div className="rounded-[1.4rem] border border-violet-200/70 bg-white/88 p-4"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">{copy.logged}</p><p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{loggedFoods.length}</p><p className="text-sm text-slate-500 dark:text-slate-400">{copy.foodEntries}</p></div>
               </div>
             </div>
             <div className="rounded-[2rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(219,234,254,0.74))] p-6 dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(30,41,59,0.74))]">
