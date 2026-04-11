@@ -97,9 +97,18 @@ function ProgressBar({ label, value, color, icon: Icon }: { label: string; value
 }
 
 const dashboardCopy: Record<Language, Record<string, string>> = {
-  en: { todayCompletion: "Today's completion", hydration: 'Hydration', steps: 'Steps', calorieTarget: 'Calorie target', addSteps: 'Add steps', macroSplit: 'Macro split', noFood: 'No food logged yet today.', last7: 'Last 7 days', inVsOut: 'Calories in vs calories burned', consumed: 'Consumed', burned: 'Burned', bodyStatus: 'Body status', glance: 'Today at a glance', fillProfile: 'fill profile', workoutIntensity: 'Workout intensity', none: 'None', entries: 'entries', netCalories: 'Net calories', aiCoach: 'AI Coach', dailyFeedback: 'Daily feedback', coachingReport: 'Get your AI coaching report', analyze: 'Analyzes your food, exercise, and wellness data to give you personalized insights.', generate: 'Generate feedback', feedbackError: "Couldn't load feedback. Check your connection and try again.", score: 'score', todaysTip: "Today's tip" },
-  fr: { todayCompletion: "Progression du jour", hydration: 'Hydratation', steps: 'Pas', calorieTarget: 'Objectif calorique', addSteps: 'Ajouter des pas', macroSplit: 'Répartition des macros', noFood: "Aucun aliment enregistré aujourd'hui.", last7: '7 derniers jours', inVsOut: 'Calories consommées vs brûlées', consumed: 'Consommées', burned: 'Brûlées', bodyStatus: 'État du corps', glance: "Vue d'ensemble du jour", fillProfile: 'compléter le profil', workoutIntensity: "Intensité d'entraînement", none: 'Aucune', entries: 'entrées', netCalories: 'Calories nettes', aiCoach: 'Coach IA', dailyFeedback: 'Retour quotidien', coachingReport: 'Obtenez votre rapport IA', analyze: 'Analyse vos repas, exercices et données bien-être pour fournir des conseils personnalisés.', generate: 'Générer', feedbackError: 'Impossible de charger le retour. Vérifiez la connexion et réessayez.', score: 'score', todaysTip: 'Conseil du jour' },
-  ar: { todayCompletion: 'تقدم اليوم', hydration: 'الترطيب', steps: 'الخطوات', calorieTarget: 'هدف السعرات', addSteps: 'أضف خطوات', macroSplit: 'توزيع المغذيات', noFood: 'لا يوجد طعام مسجل اليوم.', last7: 'آخر 7 أيام', inVsOut: 'السعرات الداخلة مقابل المحروقة', consumed: 'المستهلك', burned: 'المحروق', bodyStatus: 'حالة الجسم', glance: 'ملخص اليوم', fillProfile: 'أكمل الملف', workoutIntensity: 'شدة التمرين', none: 'لا يوجد', entries: 'إدخالات', netCalories: 'السعرات الصافية', aiCoach: 'المدرب الذكي', dailyFeedback: 'تقييم يومي', coachingReport: 'احصل على تقريرك الذكي', analyze: 'يحلل الطعام والتمارين وبيانات العافية ليعطيك ملاحظات مخصصة.', generate: 'إنشاء التقييم', feedbackError: 'تعذر تحميل التقييم. تحقق من الاتصال وحاول مرة أخرى.', score: 'النتيجة', todaysTip: 'نصيحة اليوم' },
+  en: { todayCompletion: "Today's completion", hydration: 'Hydration', steps: 'Steps', calorieTarget: 'Calorie target', addSteps: 'Add steps', macroSplit: 'Macro split', noFood: 'No food logged yet today.', last7: 'Last 7 days', inVsOut: 'Calories in vs calories burned', consumed: 'Consumed', burned: 'Burned', bodyStatus: 'Body status', glance: 'Today at a glance', fillProfile: 'fill profile', workoutIntensity: 'Workout intensity', none: 'None', entries: 'entries', netCalories: 'Net calories', aiCoach: 'AI Coach', dailyFeedback: 'Daily feedback', coachingReport: 'Get your AI coaching report', analyze: 'Analyzes your food, exercise, and wellness data to give you personalized insights.', generate: 'Generate feedback', feedbackError: "Couldn't load feedback. Check your connection and try again.", score: 'score', todaysTip: "Today's tip",
+    kicker: 'Progress', heroSub: 'Calories, movement, training, and body trends combined in a single view updated in real time.', dailyOverview: 'daily overview', yourWord: 'Your',
+    kcalToday: 'kcal today', kcalExercised: 'kcal exercised', kcalNet: 'kcal net',
+    water: 'Water', volKg: 'Vol. kg', bmi: 'BMI', net: 'Net' },
+  fr: { todayCompletion: "Progression du jour", hydration: 'Hydratation', steps: 'Pas', calorieTarget: 'Objectif calorique', addSteps: 'Ajouter des pas', macroSplit: 'Répartition des macros', noFood: "Aucun aliment enregistré aujourd'hui.", last7: '7 derniers jours', inVsOut: 'Calories consommées vs brûlées', consumed: 'Consommées', burned: 'Brûlées', bodyStatus: 'État du corps', glance: "Vue d'ensemble du jour", fillProfile: 'compléter le profil', workoutIntensity: "Intensité d'entraînement", none: 'Aucune', entries: 'entrées', netCalories: 'Calories nettes', aiCoach: 'Coach IA', dailyFeedback: 'Retour quotidien', coachingReport: 'Obtenez votre rapport IA', analyze: 'Analyse vos repas, exercices et données bien-être pour fournir des conseils personnalisés.', generate: 'Générer', feedbackError: 'Impossible de charger le retour. Vérifiez la connexion et réessayez.', score: 'score', todaysTip: 'Conseil du jour',
+    kicker: 'Progrès', heroSub: 'Calories, mouvement, entraînement et tendances corporelles réunis en un seul endroit.', dailyOverview: 'vue d\'ensemble du jour', yourWord: 'Votre',
+    kcalToday: 'kcal aujourd\'hui', kcalExercised: 'kcal dépensées', kcalNet: 'kcal nettes',
+    water: 'Eau', volKg: 'Vol. kg', bmi: 'IMC', net: 'Net' },
+  ar: { todayCompletion: 'تقدم اليوم', hydration: 'الترطيب', steps: 'الخطوات', calorieTarget: 'هدف السعرات', addSteps: 'أضف خطوات', macroSplit: 'توزيع المغذيات', noFood: 'لا يوجد طعام مسجل اليوم.', last7: 'آخر 7 أيام', inVsOut: 'السعرات الداخلة مقابل المحروقة', consumed: 'المستهلك', burned: 'المحروق', bodyStatus: 'حالة الجسم', glance: 'ملخص اليوم', fillProfile: 'أكمل الملف', workoutIntensity: 'شدة التمرين', none: 'لا يوجد', entries: 'إدخالات', netCalories: 'السعرات الصافية', aiCoach: 'المدرب الذكي', dailyFeedback: 'تقييم يومي', coachingReport: 'احصل على تقريرك الذكي', analyze: 'يحلل الطعام والتمارين وبيانات العافية ليعطيك ملاحظات مخصصة.', generate: 'إنشاء التقييم', feedbackError: 'تعذر تحميل التقييم. تحقق من الاتصال وحاول مرة أخرى.', score: 'النتيجة', todaysTip: 'نصيحة اليوم',
+    kicker: 'التقدم', heroSub: 'السعرات والحركة والتدريب وأنماط الجسم في عرض واحد يُحدَّث فورياً.', dailyOverview: 'ملخص يومك', yourWord: '',
+    kcalToday: 'سعرة اليوم', kcalExercised: 'سعرة محروقة', kcalNet: 'سعرة صافية',
+    water: 'الماء', volKg: 'الحجم كغ', bmi: 'مؤشر كتلة الجسم', net: 'الصافي' },
 };
 
 export default function DashboardPage() {
@@ -258,28 +267,31 @@ export default function DashboardPage() {
         <section className="rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">Progress</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">{copy.kicker}</p>
               <h1 className="mt-3 max-w-2xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">
-                {profile?.first_name ? `${profile.first_name}'s` : 'Your'} daily overview
+                {profile?.first_name ? `${profile.first_name}` : copy.yourWord} {copy.dailyOverview}
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">
-                Calories, movement, training, and body trends combined in a single view updated in real time.
+                {copy.heroSub}
               </p>
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-[1.4rem] border border-blue-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">Consumed</p>
+                <div className="relative overflow-hidden rounded-[1.4rem] border border-blue-200/60 bg-gradient-to-br from-blue-50 to-indigo-50/60 p-4 dark:border-blue-500/20 dark:from-blue-500/12 dark:to-indigo-600/6 dark:bg-gradient-to-br">
+                  <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-blue-400/20 blur-xl" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">{copy.consumed}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{Math.round(caloriesConsumed)}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">kcal today</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcalToday}</p>
                 </div>
-                <div className="rounded-[1.4rem] border border-violet-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Burned</p>
+                <div className="relative overflow-hidden rounded-[1.4rem] border border-violet-200/60 bg-gradient-to-br from-violet-50 to-purple-50/60 p-4 dark:border-violet-500/20 dark:from-violet-500/12 dark:to-purple-600/6 dark:bg-gradient-to-br">
+                  <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-violet-400/20 blur-xl" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">{copy.burned}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{Math.round(caloriesBurned)}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">kcal exercised</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcalExercised}</p>
                 </div>
-                <div className={`rounded-[1.4rem] border bg-white/88 p-4 dark:border-white/10 dark:bg-white/5 ${netCalories > calorieGoal ? 'border-red-200/70' : 'border-emerald-200/70'}`}>
-                  <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${netCalories > calorieGoal ? 'text-red-500' : 'text-emerald-600'}`}>Net</p>
+                <div className={`relative overflow-hidden rounded-[1.4rem] border bg-gradient-to-br p-4 ${netCalories > calorieGoal ? 'border-red-200/60 from-red-50 to-orange-50/60 dark:border-red-500/20 dark:from-red-500/12 dark:to-orange-600/6' : 'border-emerald-200/60 from-emerald-50 to-teal-50/60 dark:border-emerald-500/20 dark:from-emerald-500/12 dark:to-teal-600/6'}`}>
+                  <div className={`absolute -right-3 -top-3 h-14 w-14 rounded-full blur-xl ${netCalories > calorieGoal ? 'bg-red-400/20' : 'bg-emerald-400/20'}`} />
+                  <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${netCalories > calorieGoal ? 'text-red-500' : 'text-emerald-600'}`}>{copy.net}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{netCalories}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">kcal net</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcalNet}</p>
                 </div>
               </div>
             </div>
@@ -292,25 +304,25 @@ export default function DashboardPage() {
                 </div>
                 <div className="space-y-3">
                   <div className="rounded-[1.3rem] border border-white/75 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">Calorie target</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">{copy.calorieTarget}</p>
                     <p className="mt-2 text-3xl font-black text-slate-950 dark:text-white">{calorieGoal} <span className="text-sm font-semibold text-slate-400">kcal</span></p>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="rounded-[1.1rem] border border-white/70 bg-white/86 p-3 text-center dark:border-white/10 dark:bg-white/5">
                       <p className="text-lg font-bold text-cyan-500">{(waterMl / 1000).toFixed(1)}L</p>
-                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Water</p>
+                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{copy.water}</p>
                     </div>
                     <div className="rounded-[1.1rem] border border-white/70 bg-white/86 p-3 text-center dark:border-white/10 dark:bg-white/5">
                       <p className="text-lg font-bold text-emerald-500">{stepCount.toLocaleString()}</p>
-                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Steps</p>
+                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{copy.steps}</p>
                     </div>
                     <div className="rounded-[1.1rem] border border-white/70 bg-white/86 p-3 text-center dark:border-white/10 dark:bg-white/5">
                       <p className="text-lg font-bold text-violet-500">{Math.round(strengthVolume)}</p>
-                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Vol. kg</p>
+                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{copy.volKg}</p>
                     </div>
                     <div className="rounded-[1.1rem] border border-white/70 bg-white/86 p-3 text-center dark:border-white/10 dark:bg-white/5">
                       <p className="text-lg font-bold text-orange-500">{computed?.bmi ?? '—'}</p>
-                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">BMI</p>
+                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{copy.bmi}</p>
                     </div>
                   </div>
                 </div>
