@@ -18,7 +18,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Coachini - AI Fitness Coach',
+  title: 'Progressi - AI Fitness Coach',
   description: 'Your bilingual AI-powered fitness coaching app',
   icons: {
     icon: [

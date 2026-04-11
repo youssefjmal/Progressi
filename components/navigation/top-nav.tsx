@@ -45,7 +45,7 @@ export function TopNav() {
           href="/"
           className="text-xl font-extrabold text-[#1A6BFF] tracking-tight"
         >
-          Coachini
+          Progressi
         </Link>
 
         {/* Nav links */}
@@ -92,6 +92,16 @@ export function TopNav() {
               }`}
             >
               FR
+            </button>
+            <button
+              onClick={() => setLanguage('ar')}
+              className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
+                language === 'ar'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              AR
             </button>
           </div>
 

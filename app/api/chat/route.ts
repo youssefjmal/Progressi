@@ -130,7 +130,7 @@ export async function POST(req: Request) {
 - Protein target: ${profile.protein_target ?? '?'} g  |  Carbs: ${profile.carbs_target ?? '?'} g  |  Fat: ${profile.fat_target ?? '?'} g`
       : 'Profile not yet filled in.';
 
-    const systemPrompt = `You are Coachini, an expert AI fitness and nutrition coach. You are helpful, encouraging, and direct.
+    const systemPrompt = `You are Progressi, an expert AI fitness and nutrition coach. You are helpful, encouraging, and direct.
 
 ## YOUR SCOPE
 You help with: food logging, meal planning, macros, calorie counting, exercise tracking, workout advice, hydration, sleep, recovery, body composition, supplements, and general fitness goals.

@@ -23,6 +23,7 @@ import { computeBodyMetrics, getExerciseIntensity } from '@/lib/health-metrics';
 import { localDateString } from '@/lib/utils';
 import { useLanguage } from '@/hooks/use-language';
 import { useRequireAuth } from '@/hooks/use-require-auth';
+import { localeForLanguage } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MascotRunner } from '@/components/mascots/mascot';
@@ -180,7 +181,7 @@ export default function DashboardPage() {
     date.setDate(date.getDate() - (6 - index));
     const key = date.toISOString().split('T')[0];
     return {
-      label: date.toLocaleDateString('en', { weekday: 'short' }),
+      label: date.toLocaleDateString(localeForLanguage(language), { weekday: 'short' }),
       consumed: Math.round(foodLogs.filter((log) => log.logged_at.startsWith(key)).reduce((sum, log) => sum + log.calories, 0)),
       burned: Math.round(exerciseLogs.filter((log) => log.logged_at.startsWith(key)).reduce((sum, log) => sum + log.calories_burned, 0)),
     };
@@ -456,7 +457,7 @@ export default function DashboardPage() {
                   </div>
                 ) : (
                   <ResponsiveContainer width="100%" height={240}>
-                    <LineChart data={weightHistory.map((entry) => ({ date: new Date(entry.recorded_at).toLocaleDateString('en', { month: 'short', day: 'numeric' }), weight: entry.weight_kg }))}>
+                    <LineChart data={weightHistory.map((entry) => ({ date: new Date(entry.recorded_at).toLocaleDateString(localeForLanguage(language), { month: 'short', day: 'numeric' }), weight: entry.weight_kg }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                       <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />
                       <YAxis tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }} />

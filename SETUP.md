@@ -1,8 +1,8 @@
-# Coachini - AI Fitness Coach Setup Guide
+# Progressi - AI Fitness Coach Setup Guide
 
 ## Overview
 
-Coachini is a bilingual (English/French) fitness coaching web application that combines nutrition tracking, AI-powered coaching, and calorie visualization with a custom watermelon chart.
+Progressi is a bilingual (English/French) fitness coaching web application that combines nutrition tracking, AI-powered coaching, and calorie visualization with a custom watermelon chart.
 
 ## Architecture
 

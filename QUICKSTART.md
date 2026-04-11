@@ -1,4 +1,4 @@
-# Coachini - Quick Start Guide
+# Progressi - Quick Start Guide
 
 ## What You Get
 
@@ -165,8 +165,8 @@ Edit `lib/i18n.ts` translation objects (en/fr)
 ### Via Docker
 
 ```bash
-docker build -t coachini .
-docker run -p 3000:3000 -e AI_GATEWAY_API_KEY=xxx coachini
+docker build -t progressi .
+docker run -p 3000:3000 -e AI_GATEWAY_API_KEY=xxx progressi
 ```
 
 ### Via Self-Hosted

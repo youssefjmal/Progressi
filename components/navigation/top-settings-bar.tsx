@@ -19,7 +19,7 @@ export function TopSettingsBar() {
     <div className="fixed top-0 right-0 z-50 flex items-center gap-2 px-4 py-2.5 md:px-6">
       {/* Language toggle */}
       <div className="flex items-center gap-0.5 bg-background/80 backdrop-blur-md border border-border rounded-lg p-0.5 shadow-sm">
-        {(['en', 'fr'] as Language[]).map((lang) => (
+        {(['en', 'fr', 'ar'] as Language[]).map((lang) => (
           <button
             key={lang}
             onClick={() => setLanguage(lang)}

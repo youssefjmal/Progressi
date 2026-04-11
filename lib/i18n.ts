@@ -1,4 +1,6 @@
-export type Language = 'en' | 'fr';
+import { arTranslations } from '@/lib/i18n-ar';
+
+export type Language = 'en' | 'fr' | 'ar';
 
 export const translations = {
   en: {
@@ -96,7 +98,7 @@ export const translations = {
       sets: 'Sets',
       reps: 'Reps',
       weight: 'Weight',
-      welcome: 'Welcome to Coachini',
+      welcome: 'Welcome to Progressi',
       startLogging: 'Start Logging Food',
       current: 'Current Weight',
       goal: 'Goal Weight',
@@ -173,7 +175,7 @@ export const translations = {
       title: 'AI Coach',
       placeholder: 'Ask me anything about fitness or nutrition...',
       send: 'Send',
-      typing: 'Coachini is thinking...',
+      typing: 'Progressi is thinking...',
       quickQuestion1: 'What should I eat before a workout?',
       quickQuestion2: 'How many calories do I need to lose weight?',
       quickQuestion3: 'Give me a beginner workout plan',
@@ -369,7 +371,7 @@ export const translations = {
       sets: 'Séries',
       reps: 'Répétitions',
       weight: 'Poids',
-      welcome: 'Bienvenue sur Coachini',
+      welcome: 'Bienvenue sur Progressi',
       startLogging: 'Commencer à enregistrer',
       current: 'Poids actuel',
       goal: 'Poids objectif',
@@ -446,7 +448,7 @@ export const translations = {
       title: 'Coach IA',
       placeholder: 'Posez-moi une question sur le fitness ou la nutrition...',
       send: 'Envoyer',
-      typing: 'Coachini réfléchit...',
+      typing: 'Progressi réfléchit...',
       quickQuestion1: 'Que dois-je manger avant un entraînement ?',
       quickQuestion2: 'Combien de calories pour perdre du poids ?',
       quickQuestion3: 'Donnez-moi un programme débutant',
@@ -546,6 +548,7 @@ export const translations = {
       support: 'Support',
     },
   },
+  ar: arTranslations,
 };
 
 export function getTranslation(lang: Language, path: string, defaultValue = ''): string {
@@ -554,7 +557,12 @@ export function getTranslation(lang: Language, path: string, defaultValue = ''):
 
   for (const key of keys) {
     current = (current as Record<string, unknown>)?.[key];
-    if (current === undefined || current === null) return defaultValue;
+    if (current === undefined || current === null) {
+      if (lang !== 'en') {
+        return getTranslation('en', path, defaultValue);
+      }
+      return defaultValue;
+    }
   }
 
   return typeof current === 'string' ? current : defaultValue;
@@ -562,4 +570,14 @@ export function getTranslation(lang: Language, path: string, defaultValue = ''):
 
 export function t(lang: Language, key: string): string {
   return getTranslation(lang, key, key);
+}
+
+export function localeForLanguage(lang: Language): string {
+  if (lang === 'fr') return 'fr-FR';
+  if (lang === 'ar') return 'ar';
+  return 'en-US';
+}
+
+export function isRtlLanguage(lang: Language): boolean {
+  return lang === 'ar';
 }

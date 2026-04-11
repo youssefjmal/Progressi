@@ -61,7 +61,7 @@ export function Sidebar() {
             <div className="absolute inset-0 rounded-xl ring-2 ring-[#1A6BFF]/30" />
           </div>
           <div>
-            <span className="text-[1.15rem] font-extrabold tracking-tight text-slate-900 dark:text-white">Coachini</span>
+            <span className="text-[1.15rem] font-extrabold tracking-tight text-slate-900 dark:text-white">Progressi</span>
             <p className="text-[10px] font-medium text-slate-400 leading-none mt-0.5">AI Fitness Coach</p>
           </div>
         </div>
@@ -106,7 +106,7 @@ export function Sidebar() {
             {theme === 'dark' ? 'Light' : 'Dark'}
           </button>
           <div className="flex items-center gap-0.5 rounded-xl border border-slate-200 bg-slate-50 p-1 dark:border-white/8 dark:bg-white/4">
-            {(['en', 'fr'] as Language[]).map((lang) => (
+            {(['en', 'fr', 'ar'] as Language[]).map((lang) => (
               <button
                 key={lang}
                 onClick={() => setLanguage(lang)}
@@ -139,7 +139,7 @@ export function Sidebar() {
           </div>
         )}
 
-        <p className="mt-3 text-[10px] text-slate-300 dark:text-slate-600">© {new Date().getFullYear()} Coachini</p>
+        <p className="mt-3 text-[10px] text-slate-300 dark:text-slate-600">© {new Date().getFullYear()} Progressi</p>
       </div>
     </aside>
   );

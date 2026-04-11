@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { Language } from '@/lib/i18n';
+import { isRtlLanguage, type Language } from '@/lib/i18n';
 
 interface LanguageContextType {
   language: Language;
@@ -18,10 +18,16 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
     // Load language from localStorage or user profile
     const saved = localStorage.getItem('language') as Language;
-    if (saved && (saved === 'en' || saved === 'fr')) {
+    if (saved && (saved === 'en' || saved === 'fr' || saved === 'ar')) {
       setLanguageState(saved);
     }
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    document.documentElement.lang = language;
+    document.documentElement.dir = isRtlLanguage(language) ? 'rtl' : 'ltr';
+  }, [language, mounted]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);

@@ -209,6 +209,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-1 rounded-lg bg-muted p-1">
                 <button onClick={() => setLanguage('en')} className={`rounded-md px-3 py-1 text-xs font-semibold transition-colors ${language === 'en' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'}`}>EN</button>
                 <button onClick={() => setLanguage('fr')} className={`rounded-md px-3 py-1 text-xs font-semibold transition-colors ${language === 'fr' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'}`}>FR</button>
+                <button onClick={() => setLanguage('ar')} className={`rounded-md px-3 py-1 text-xs font-semibold transition-colors ${language === 'ar' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground'}`}>AR</button>
               </div>
               <button onClick={toggleTheme} className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" aria-label="Toggle dark mode">
                 {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}

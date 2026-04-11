@@ -188,7 +188,7 @@ export default function SignUpPage() {
       <div className="w-full max-w-lg">
         {/* Logo */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-extrabold text-[#1A6BFF]">Coachini</h1>
+          <h1 className="text-3xl font-extrabold text-[#1A6BFF]">Progressi</h1>
           <p className="text-muted-foreground mt-1 text-sm">
             {step === 1
               ? t(lang, 'auth.step1of3')

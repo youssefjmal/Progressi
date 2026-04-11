@@ -45,7 +45,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-[#1A6BFF]">Coachini</h1>
+          <h1 className="text-3xl font-extrabold text-[#1A6BFF]">Progressi</h1>
           <p className="text-muted-foreground mt-2">Welcome back to your fitness journey</p>
         </div>
 

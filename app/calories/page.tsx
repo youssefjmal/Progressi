@@ -9,7 +9,7 @@ import { WatermelonChart } from '@/components/charts/watermelon-chart';
 import { MascotEnergy } from '@/components/mascots/mascot';
 import { useLanguage } from '@/hooks/use-language';
 import { useRequireAuth } from '@/hooks/use-require-auth';
-import { t } from '@/lib/i18n';
+import { localeForLanguage, t } from '@/lib/i18n';
 import { computeBodyMetrics } from '@/lib/health-metrics';
 import { localDateString } from '@/lib/utils';
 
@@ -332,7 +332,7 @@ export default function CaloriesPage() {
                   <MascotEnergy size={160} />
                   <p className="mt-2 text-sm font-semibold text-white/90">Today&apos;s energy snapshot</p>
                   <p className="text-xs text-white/45">
-                    {new Date().toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', {
+                    {new Date().toLocaleDateString(localeForLanguage(language), {
                       weekday: 'long', month: 'long', day: 'numeric',
                     })}
                   </p>

@@ -133,7 +133,7 @@ export function AuthModal() {
           <div className="p-6">
             {/* Logo */}
             <div className="text-center mb-5">
-              <span className="text-2xl font-extrabold text-[#1A6BFF]">Coachini</span>
+              <span className="text-2xl font-extrabold text-[#1A6BFF]">Progressi</span>
             </div>
 
             {/* LOGIN */}
