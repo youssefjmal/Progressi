@@ -8,6 +8,17 @@ import { Activity, Calculator, ChevronDown, ChevronUp, Droplets, Flame, Footprin
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { MascotStar } from '@/components/mascots/mascot';
 import { useLanguage } from '@/hooks/use-language';
 import { useRequireAuth } from '@/hooks/use-require-auth';
@@ -46,6 +57,57 @@ const activityOptions = [
   { value: 'veryActive', label: 'Very Active', desc: 'Frequent training or physical lifestyle.' },
 ];
 
+const profileCopy: Record<Language, Record<string, string>> = {
+  en: { bodyProfile: 'Body Profile', fillProfile: 'fill profile', target: 'Target', toGoal: 'To goal', toLose: 'to lose', toGain: 'to gain', currentPace: 'at current pace', currentWeight: 'Current weight', water: 'Water', logWeight: 'Log Weight', weightKg: 'Weight (kg)', noteOptional: 'Note (optional)', notePlaceholder: 'morning, post-workout...', logged: 'Logged!', saving: 'Saving…', recent: 'Recent', dailyTargets: 'Daily Targets', saveProfile: 'Save Profile', saved: 'Saved!', logout: 'Log out', logoutConfirmTitle: 'Log out?', logoutConfirmDesc: 'Are you sure you want to log out?', logoutConfirm: 'Log out', logoutCancel: 'Cancel' },
+  fr: { bodyProfile: 'Profil corporel', fillProfile: 'compléter le profil', target: 'Objectif', toGoal: "Jusqu'à l'objectif", toLose: 'à perdre', toGain: 'à gagner', currentPace: 'au rythme actuel', currentWeight: 'Poids actuel', water: 'Eau', logWeight: 'Enregistrer le poids', weightKg: 'Poids (kg)', noteOptional: 'Note (optionnelle)', notePlaceholder: 'matin, après entraînement...', logged: 'Enregistré !', saving: 'Enregistrement…', recent: 'Récent', dailyTargets: 'Objectifs quotidiens', saveProfile: 'Enregistrer le profil', saved: 'Enregistré !', logout: 'Se déconnecter', logoutConfirmTitle: 'Se déconnecter ?', logoutConfirmDesc: 'Êtes-vous sûr de vouloir vous déconnecter ?', logoutConfirm: 'Se déconnecter', logoutCancel: 'Annuler' },
+  ar: { bodyProfile: 'بيانات الجسم', fillProfile: 'أكمل الملف', target: 'الهدف', toGoal: 'حتى الهدف', toLose: 'للخسارة', toGain: 'للزيادة', currentPace: 'بالوتيرة الحالية', currentWeight: 'الوزن الحالي', water: 'الماء', logWeight: 'سجل الوزن', weightKg: 'الوزن (كغ)', noteOptional: 'ملاحظة (اختياري)', notePlaceholder: 'صباحاً، بعد التمرين...', logged: 'تم التسجيل!', saving: 'جارٍ الحفظ…', recent: 'الأحدث', dailyTargets: 'الأهداف اليومية', saveProfile: 'احفظ الملف', saved: 'تم الحفظ!', logout: 'تسجيل الخروج', logoutConfirmTitle: 'تسجيل الخروج؟', logoutConfirmDesc: 'هل أنت متأكد أنك تريد تسجيل الخروج؟', logoutConfirm: 'تسجيل الخروج', logoutCancel: 'إلغاء' },
+};
+
+const profilePacingCopy: Record<Language, Record<string, string>> = {
+  en: {
+    goalPacing: 'Goal pacing',
+    currentMaintenance: 'Currently on maintenance',
+    tdeeHint: 'Maintenance is',
+    paceIntro: 'Choose how quickly you want to move toward your goal.',
+    losePace: 'Faster fat loss means a deeper deficit and more fatigue.',
+    gainPace: 'Faster weight gain means a larger surplus and stronger recovery demands.',
+    conservative: 'Conservative',
+    moderate: 'Moderate',
+    aggressive: 'Aggressive',
+    deficitSuffix: 'kcal/day deficit',
+    surplusSuffix: 'kcal/day surplus',
+    goalRateTitle: 'Goal rate',
+  },
+  fr: {
+    goalPacing: "Rythme d'objectif",
+    currentMaintenance: 'Actuellement en maintien',
+    tdeeHint: 'Le maintien est a',
+    paceIntro: "Choisissez la vitesse a laquelle vous voulez atteindre votre objectif.",
+    losePace: 'Une perte plus rapide implique un deficit plus profond et plus de fatigue.',
+    gainPace: 'Une prise plus rapide implique un surplus plus important et plus de recuperation.',
+    conservative: 'Prudent',
+    moderate: 'Modere',
+    aggressive: 'Rapide',
+    deficitSuffix: 'kcal/jour de deficit',
+    surplusSuffix: 'kcal/jour de surplus',
+    goalRateTitle: "Rythme d'objectif",
+  },
+  ar: {
+    goalPacing: 'وتيرة الهدف',
+    currentMaintenance: 'حالياً على الثبات',
+    tdeeHint: 'سعرات الثبات هي',
+    paceIntro: 'اختر السرعة التي تريد بها الوصول إلى هدفك.',
+    losePace: 'كلما زادت سرعة النزول زاد العجز وارتفع التعب.',
+    gainPace: 'كلما زادت سرعة الزيادة ارتفع الفائض واحتجت لتعافٍ أكبر.',
+    conservative: 'هادئ',
+    moderate: 'متوسط',
+    aggressive: 'سريع',
+    deficitSuffix: 'سعرة/يوم عجز',
+    surplusSuffix: 'سعرة/يوم فائض',
+    goalRateTitle: 'وتيرة الهدف',
+  },
+};
+
 function MacroBar({ label, current, target, color }: { label: string; current: number; target: number; color: string }) {
   const pct = target > 0 ? Math.min((current / target) * 100, 100) : 0;
   return (
@@ -64,6 +126,8 @@ function MacroBar({ label, current, target, color }: { label: string; current: n
 export default function ProfilePage() {
   const { user, isLoading: authLoading, supabase } = useRequireAuth();
   const { language } = useLanguage();
+  const copy = profileCopy[language];
+  const pacingCopy = profilePacingCopy[language];
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -192,6 +256,14 @@ export default function ProfilePage() {
   const weightDiff = profile.current_weight && profile.goal_weight
     ? Math.round((profile.current_weight - profile.goal_weight) * 10) / 10
     : null;
+  const goalDirection =
+    profile.goal_weight == null || profile.current_weight == null
+      ? 'maintain'
+      : profile.goal_weight < profile.current_weight
+      ? 'lose'
+      : profile.goal_weight > profile.current_weight
+      ? 'gain'
+      : 'maintain';
 
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe_0%,#eff6ff_34%,#f8fbff_74%,#ffffff_100%)] px-4 py-6 pb-24 dark:bg-[radial-gradient(circle_at_top,#1e3a8a_0%,#0f172a_42%,#020617_100%)] sm:px-6 lg:px-8">
@@ -201,7 +273,7 @@ export default function ProfilePage() {
         <section className="rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">Body Profile</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">{copy.bodyProfile}</p>
               <h1 className="mt-3 max-w-2xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">
                 {displayName}
               </h1>
@@ -212,20 +284,20 @@ export default function ProfilePage() {
                 <div className="rounded-[1.4rem] border border-blue-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">BMI</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{computed?.bmi ?? '—'}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">{computed?.bmiCategory.label ?? 'fill profile'}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{computed?.bmiCategory.label ?? copy.fillProfile}</p>
                 </div>
                 <div className="rounded-[1.4rem] border border-orange-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-orange-600">Target</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-orange-600">{copy.target}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{computed?.targetCalories ?? '—'}</p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">kcal / day</p>
                 </div>
                 <div className="rounded-[1.4rem] border border-violet-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">To goal</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">{copy.toGoal}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">
                     {computed?.weeksToGoal ? `${computed.weeksToGoal}w` : '—'}
                   </p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {weightDiff != null ? `${Math.abs(weightDiff)} kg ${weightDiff > 0 ? 'to lose' : 'to gain'}` : 'at current pace'}
+                    {weightDiff != null ? `${Math.abs(weightDiff)} kg ${weightDiff > 0 ? copy.toLose : copy.toGain}` : copy.currentPace}
                   </p>
                 </div>
               </div>
@@ -239,7 +311,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="space-y-3">
                   <div className="rounded-[1.3rem] border border-white/75 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">Current weight</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">{copy.currentWeight}</p>
                     <p className="mt-2 text-3xl font-black text-slate-950 dark:text-white">
                       {profile.current_weight ?? '—'} <span className="text-lg font-semibold text-slate-400">kg</span>
                     </p>
@@ -259,7 +331,7 @@ export default function ProfilePage() {
                     </div>
                     <div className="rounded-[1.1rem] border border-white/70 bg-white/86 p-3 text-center dark:border-white/10 dark:bg-white/5">
                       <p className="text-lg font-bold text-cyan-500">{computed ? (computed.hydrationTargetMl / 1000).toFixed(1) : '—'}L</p>
-                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Water</p>
+                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{copy.water}</p>
                     </div>
                   </div>
                 </div>
@@ -282,7 +354,7 @@ export default function ProfilePage() {
               >
                 <div className="flex items-center gap-2">
                   <Scale size={16} className="text-[#1A6BFF]" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Log Weight</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.logWeight}</p>
                 </div>
                 {showWeightForm ? <ChevronUp size={14} className="text-slate-400" /> : <ChevronDown size={14} className="text-slate-400" />}
               </button>
@@ -299,7 +371,7 @@ export default function ProfilePage() {
                   >
                     <div className="mt-4 space-y-3">
                       <div>
-                        <Label className="text-xs text-slate-500">Weight (kg)</Label>
+                        <Label className="text-xs text-slate-500">{copy.weightKg}</Label>
                         <Input
                           type="number"
                           step="0.1"
@@ -310,9 +382,9 @@ export default function ProfilePage() {
                         />
                       </div>
                       <div>
-                        <Label className="text-xs text-slate-500">Note (optional)</Label>
+                        <Label className="text-xs text-slate-500">{copy.noteOptional}</Label>
                         <Input
-                          placeholder="morning, post-workout…"
+                          placeholder={copy.notePlaceholder}
                           value={weightNote}
                           onChange={(e) => setWeightNote(e.target.value)}
                           className="mt-1.5 rounded-xl input-glow"
@@ -324,7 +396,7 @@ export default function ProfilePage() {
                         className={`w-full rounded-xl ${weightLogged ? 'bg-green-600 hover:bg-green-600' : 'bg-[#1A6BFF] hover:bg-[#1456d1]'} text-white`}
                       >
                         <Scale size={14} className="mr-2" />
-                        {weightLogged ? 'Logged!' : isLoggingWeight ? 'Saving…' : 'Log Weight'}
+                        {weightLogged ? copy.logged : isLoggingWeight ? copy.saving : copy.logWeight}
                       </Button>
                     </div>
                   </motion.div>
@@ -334,7 +406,7 @@ export default function ProfilePage() {
               {/* Recent weight history */}
               {weightHistory.length > 0 && (
                 <div className="mt-4 space-y-2">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Recent</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">{copy.recent}</p>
                   {weightHistory.slice(0, 5).map((entry, i) => (
                     <div key={entry.id} className={`flex items-center justify-between rounded-xl px-3 py-2 ${i === 0 ? 'bg-[#1A6BFF]/8 border border-[#1A6BFF]/15' : 'bg-slate-50 dark:bg-white/4'}`}>
                       <div>
@@ -353,7 +425,7 @@ export default function ProfilePage() {
             {/* Body targets summary */}
             {computed && (
               <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Daily Targets</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.dailyTargets}</p>
                 <div className="mt-5 space-y-4">
                   <MacroBar label="Protein" current={0} target={computed.protein} color="#3B82F6" />
                   <MacroBar label="Carbs" current={0} target={computed.carbs} color="#10B981" />
@@ -363,7 +435,7 @@ export default function ProfilePage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-300">
                       <Droplets size={14} />
-                      <span className="text-xs font-semibold">Water</span>
+                    <span className="text-xs font-semibold">{copy.water}</span>
                     </div>
                     <span className="text-sm font-bold text-slate-900 dark:text-white">{(computed.hydrationTargetMl / 1000).toFixed(1)} L</span>
                   </div>
@@ -393,12 +465,31 @@ export default function ProfilePage() {
                 className={`w-full rounded-xl ${saved ? 'bg-green-600 hover:bg-green-600' : 'bg-[#1A6BFF] hover:bg-[#1456d1]'} text-white`}
               >
                 <Save size={15} className="mr-2" />
-                {saved ? 'Saved!' : isSaving ? 'Saving…' : 'Save Profile'}
+                {saved ? copy.saved : isSaving ? copy.saving : copy.saveProfile}
               </Button>
-              <Button variant="destructive" onClick={handleLogout} className="w-full rounded-xl">
-                <LogOut size={15} className="mr-2" />
-                Log out
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="destructive" className="w-full rounded-xl">
+                    <LogOut size={15} className="mr-2" />
+                    {copy.logout}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{copy.logoutConfirmTitle}</AlertDialogTitle>
+                    <AlertDialogDescription>{copy.logoutConfirmDesc}</AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{copy.logoutCancel}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleLogout}
+                      className="bg-rose-600 hover:bg-rose-700 text-white"
+                    >
+                      {copy.logoutConfirm}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </aside>
 
@@ -477,12 +568,12 @@ export default function ProfilePage() {
                   <div className="rounded-[1.4rem] border border-[#1A6BFF]/15 bg-[linear-gradient(135deg,rgba(26,107,255,0.08),rgba(16,185,129,0.04))] p-4">
                     <div className="flex items-center gap-2 text-[#1A6BFF]">
                       <Timer size={14} />
-                      <p className="text-xs font-semibold">Goal pacing</p>
+                      <p className="text-xs font-semibold">{pacingCopy.goalPacing}</p>
                     </div>
                     <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
                       {computed.weeksToGoal
-                        ? `~${computed.weeksToGoal} weeks at current pace`
-                        : 'Currently on maintenance'}
+                        ? `~${computed.weeksToGoal} weeks ${copy.currentPace}`
+                        : pacingCopy.currentMaintenance}
                     </p>
                   </div>
                   <div className="rounded-[1.4rem] border border-orange-500/15 bg-orange-500/5 p-4">
@@ -491,7 +582,7 @@ export default function ProfilePage() {
                       <p className="text-xs font-semibold">TDEE</p>
                     </div>
                     <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                      Maintenance is <span className="font-bold text-slate-900 dark:text-white">{computed.tdee} kcal</span>
+                      {pacingCopy.tdeeHint} <span className="font-bold text-slate-900 dark:text-white">{computed.tdee} kcal</span>
                     </p>
                   </div>
                 </div>
@@ -539,14 +630,16 @@ export default function ProfilePage() {
               transition={{ duration: 0.3, delay: 0.12 }}
               className="rounded-[2rem] border border-white/70 bg-white/84 p-6 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">Goal pacing</p>
-              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">Weight loss rate</h2>
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">A larger deficit means faster results but higher fatigue. Most people do best at 0.5 kg/week.</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{pacingCopy.goalPacing}</p>
+              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">{pacingCopy.goalRateTitle}</h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                {pacingCopy.paceIntro} {goalDirection === 'gain' ? pacingCopy.gainPace : pacingCopy.losePace}
+              </p>
               <div className="mt-5 grid grid-cols-3 gap-3">
                 {[
-                  { rate: 0.25, label: 'Conservative', desc: '~250 kcal/day deficit' },
-                  { rate: 0.5, label: 'Moderate', desc: '~500 kcal/day deficit' },
-                  { rate: 1, label: 'Aggressive', desc: '~1 000 kcal/day deficit' },
+                  { rate: 0.25, label: pacingCopy.conservative, desc: `~250 ${goalDirection === 'gain' ? pacingCopy.surplusSuffix : pacingCopy.deficitSuffix}` },
+                  { rate: 0.5, label: pacingCopy.moderate, desc: `~500 ${goalDirection === 'gain' ? pacingCopy.surplusSuffix : pacingCopy.deficitSuffix}` },
+                  { rate: 1, label: pacingCopy.aggressive, desc: `~1 000 ${goalDirection === 'gain' ? pacingCopy.surplusSuffix : pacingCopy.deficitSuffix}` },
                 ].map(({ rate, label, desc }) => {
                   const selected = (profile.weight_loss_rate ?? 0.5) === rate;
                   return (

@@ -9,6 +9,17 @@ import { createClient } from '@/lib/supabase/client';
 import { t } from '@/lib/i18n';
 import type { Language } from '@/lib/i18n';
 import { useEffect, useState } from 'react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const navItems = [
   { href: '/calories', icon: Apple, labelKey: 'nav.home' },
@@ -19,11 +30,58 @@ const navItems = [
   { href: '/profile', icon: User, labelKey: 'nav.profile' },
 ];
 
+const sidebarCopy: Record<Language, {
+  tagline: string;
+  quickSettings: string;
+  light: string;
+  dark: string;
+  logout: string;
+  logoutConfirmTitle: string;
+  logoutConfirmDesc: string;
+  logoutConfirm: string;
+  logoutCancel: string;
+}> = {
+  en: {
+    tagline: 'AI Fitness Coach',
+    quickSettings: 'Quick settings',
+    light: 'Light',
+    dark: 'Dark',
+    logout: 'Log out',
+    logoutConfirmTitle: 'Log out?',
+    logoutConfirmDesc: 'Are you sure you want to log out?',
+    logoutConfirm: 'Log out',
+    logoutCancel: 'Cancel',
+  },
+  fr: {
+    tagline: 'Coach fitness IA',
+    quickSettings: 'Réglages rapides',
+    light: 'Clair',
+    dark: 'Sombre',
+    logout: 'Se déconnecter',
+    logoutConfirmTitle: 'Se déconnecter ?',
+    logoutConfirmDesc: 'Êtes-vous sûr de vouloir vous déconnecter ?',
+    logoutConfirm: 'Se déconnecter',
+    logoutCancel: 'Annuler',
+  },
+  ar: {
+    tagline: 'مدرب لياقة ذكي',
+    quickSettings: 'إعدادات سريعة',
+    light: 'فاتح',
+    dark: 'داكن',
+    logout: 'تسجيل الخروج',
+    logoutConfirmTitle: 'تسجيل الخروج؟',
+    logoutConfirmDesc: 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
+    logoutConfirm: 'تسجيل الخروج',
+    logoutCancel: 'إلغاء',
+  },
+};
+
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const copy = sidebarCopy[language];
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userInitials, setUserInitials] = useState('U');
 
@@ -62,7 +120,7 @@ export function Sidebar() {
           </div>
           <div>
             <span className="text-[1.15rem] font-extrabold tracking-tight text-slate-900 dark:text-white">Progressi</span>
-            <p className="text-[10px] font-medium text-slate-400 leading-none mt-0.5">AI Fitness Coach</p>
+            <p className="text-[10px] font-medium text-slate-400 leading-none mt-0.5">{copy.tagline}</p>
           </div>
         </div>
       </div>
@@ -94,7 +152,7 @@ export function Sidebar() {
 
       {/* Shortcuts divider */}
       <div className="px-5 py-3 border-t border-slate-100 dark:border-white/[0.05]">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-300 dark:text-slate-600 mb-2.5">Quick settings</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-300 dark:text-slate-600 mb-2.5">{copy.quickSettings}</p>
 
         {/* Theme + Language row */}
         <div className="flex items-center gap-2 mb-3">
@@ -103,7 +161,7 @@ export function Sidebar() {
             className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600 transition-all hover:border-[#1A6BFF]/40 hover:text-[#1A6BFF] dark:border-white/8 dark:bg-white/4 dark:text-slate-400 dark:hover:text-[#4D8FFF]"
           >
             {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
-            {theme === 'dark' ? 'Light' : 'Dark'}
+            {theme === 'dark' ? copy.light : copy.dark}
           </button>
           <div className="flex items-center gap-0.5 rounded-xl border border-slate-200 bg-slate-50 p-1 dark:border-white/8 dark:bg-white/4">
             {(['en', 'fr', 'ar'] as Language[]).map((lang) => (
@@ -129,13 +187,31 @@ export function Sidebar() {
               {userInitials}
             </div>
             <p className="flex-1 truncate text-[11px] font-medium text-slate-500 dark:text-slate-400">{userEmail}</p>
-            <button
-              onClick={handleLogout}
-              title="Log out"
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-rose-50 hover:text-rose-500 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
-            >
-              <LogOut size={14} />
-            </button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button
+                  title={copy.logout}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-all hover:bg-rose-50 hover:text-rose-500 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
+                >
+                  <LogOut size={14} />
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{copy.logoutConfirmTitle}</AlertDialogTitle>
+                  <AlertDialogDescription>{copy.logoutConfirmDesc}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{copy.logoutCancel}</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleLogout}
+                    className="bg-rose-600 hover:bg-rose-700 text-white"
+                  >
+                    {copy.logoutConfirm}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         )}
 
