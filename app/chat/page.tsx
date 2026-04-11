@@ -57,6 +57,15 @@ interface TodayFoodLog {
   unit: string;
 }
 
+interface FoodLogRow {
+  id: string;
+  food_id: string;
+  meal_type: MealType;
+  calories: number;
+  quantity: number;
+  unit: string;
+}
+
 interface Profile {
   age: number | null;
   gender: string | null;
@@ -169,12 +178,15 @@ export default function ChatPage() {
       (foodsRes.data || []).map((food) => [(food as { id: string; name: string }).id, (food as { id: string; name: string }).name]),
     );
     setProfile(profileRes.data);
-    setTodayLogs(
-      (logsRes.data || []).map((log) => ({
-        ...(log as object),
-        food_name: foodsById.get((log as { food_id: string }).food_id) || 'Food',
-      })),
-    );
+    const mappedLogs = ((logsRes.data || []) as FoodLogRow[]).map((log) => ({
+      id: log.id,
+      food_name: foodsById.get(log.food_id) || 'Food',
+      meal_type: log.meal_type,
+      calories: log.calories,
+      quantity: log.quantity,
+      unit: log.unit,
+    }));
+    setTodayLogs(mappedLogs);
     setWellness(wellnessRes.data || null);
     setIsPageLoading(false);
   };

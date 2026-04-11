@@ -1,4 +1,4 @@
-# Coachini — AI Fitness Coach
+# Progressi — AI Fitness Coach
 
 A full-stack fitness tracking app built with Next.js 16, Supabase, and Groq AI. Tracks food, exercise, and weight with personalized AI coaching in English and French.
 
@@ -152,7 +152,7 @@ Limits are enforced server-side with atomic PostgreSQL increments (no Redis requ
 
 ## Admin Panel
 
-Accessible at `/admin` — only for the account `youssefjmel42@gmail.com`.
+Accessible at `/admin` — only for the account `jmelyoussef1@gmail.com`.
 
 Shows:
 - Total users, new this week, active today

@@ -18,4 +18,4 @@ export function createAdminClient() {
   });
 }
 
-export const ADMIN_EMAIL = 'youssefjmel42@gmail.com';
+export const ADMIN_EMAIL = 'jmelyoussef1@gmail.com';

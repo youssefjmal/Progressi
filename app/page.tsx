@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { Apple, ChevronRight, Droplets, Footprints, Mail, MessageCircle, Moon, Phone, Sparkles, Sun, Target } from 'lucide-react';
+import { type FormEvent, useEffect, useState } from 'react';
+import { Apple, ChevronRight, Droplets, Footprints, Mail, MessageCircle, Moon, Sparkles, Sun, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/hooks/use-language';
@@ -30,6 +30,7 @@ export default function LandingPage() {
   const { language, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
+  const [contactEmail, setContactEmail] = useState('');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -44,6 +45,16 @@ export default function LandingPage() {
   if (isLoading) {
     return <div className="flex min-h-screen items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-[#1A6BFF] border-t-transparent" /></div>;
   }
+
+  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const email = contactEmail.trim();
+    if (!email) return;
+
+    const subject = encodeURIComponent('Progressi contact request');
+    const body = encodeURIComponent(`Hi, I would like to know more about Progressi.\n\nContact email: ${email}`);
+    window.location.href = `mailto:jmelyoussef1@gmail.com?subject=${subject}&body=${body}`;
+  };
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(26,107,255,0.28),transparent_28%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.16),transparent_24%),linear-gradient(180deg,#f4f9ff_0%,#edf5ff_42%,#f7fbff_100%)] dark:bg-[radial-gradient(circle_at_top_left,rgba(26,107,255,0.20),transparent_26%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.10),transparent_24%),linear-gradient(180deg,#07111f_0%,#0b1830_42%,#0b1020_100%)]">
@@ -63,7 +74,7 @@ export default function LandingPage() {
               </motion.h1>
 
               <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-                Coachini combines calorie intake, hydration, steps, workouts, health-focused chat, and daily recommendations into one responsive web app for phone and desktop.
+                Progressi combines calorie intake, hydration, steps, workouts, health-focused chat, and daily recommendations into one responsive web app for phone and desktop.
               </motion.p>
 
               <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -80,8 +91,8 @@ export default function LandingPage() {
                 {[{ label: 'Daily calories', value: 'Smart target', icon: FlameSafe }, { label: 'Hydration', value: 'Water goal', icon: Droplets }, { label: 'Movement', value: 'Step guidance', icon: Footprints }].map((item) => (
                   <div key={item.label} className="rounded-[1.4rem] border border-white/65 bg-[linear-gradient(180deg,rgba(255,255,255,0.90),rgba(239,246,255,0.80))] p-4 shadow-[0_18px_60px_rgba(15,23,42,0.05)] backdrop-blur dark:border-white/8 dark:bg-white/5">
                     <item.icon size={18} className="text-[#1A6BFF]" />
-                    <p className="mt-3 text-sm font-semibold text-slate-900 dark:text-white">{item.value}</p>
-                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{item.label}</p>
+                    <p className="mt-3 text-sm font-semibold text-[#0E4FCC]">{item.value}</p>
+                    <p className="mt-1 text-sm text-[#6A8CC0]">{item.label}</p>
                   </div>
                 ))}
               </motion.div>
@@ -104,8 +115,8 @@ export default function LandingPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">Today</p>
-                          <p className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">1,840 kcal</p>
-                          <p className="text-sm text-slate-500 dark:text-slate-400">consumed from meals and snacks</p>
+                          <p className="mt-2 text-3xl font-bold text-[#0E4FCC]">1,840 kcal</p>
+                          <p className="text-sm text-[#6A8CC0]">consumed from meals and snacks</p>
                         </div>
                         <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-[#1A6BFF] text-sm font-bold text-[#1A6BFF]">78%</div>
                       </div>
@@ -114,13 +125,13 @@ export default function LandingPage() {
                       {[{ label: 'Protein', value: '142g', color: '#3B82F6' }, { label: 'Water', value: '2.4L', color: '#06B6D4' }, { label: 'Steps', value: '8.2k', color: '#10B981' }].map((item) => (
                         <div key={item.label} className="rounded-[1.1rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.90),rgba(239,246,255,0.74))] p-3 text-center dark:border-white/8 dark:bg-white/4">
                           <p className="text-lg font-bold" style={{ color: item.color }}>{item.value}</p>
-                          <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{item.label}</p>
+                          <p className="mt-1 text-[11px] text-[#6A8CC0]">{item.label}</p>
                         </div>
                       ))}
                     </div>
                     <div className="rounded-[1.4rem] border border-[#1A6BFF]/15 bg-[linear-gradient(135deg,rgba(26,107,255,0.08),rgba(14,165,233,0.05))] p-4">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">Diet recommendation</p>
-                      <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Balance today&apos;s intake with lean protein, fruit, and more water before dinner to keep energy stable and macros on target.</p>
+                      <p className="text-sm font-semibold text-[#0E4FCC]">Diet recommendation</p>
+                      <p className="mt-2 text-sm leading-6 text-[#5478AF]">Balance today&apos;s intake with lean protein, fruit, and more water before dinner to keep energy stable and macros on target.</p>
                     </div>
                   </div>
                 </div>
@@ -140,8 +151,8 @@ export default function LandingPage() {
             {features.map((feature) => (
               <div key={feature.title} className="rounded-[1.8rem] border border-white/65 bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(239,246,255,0.82))] p-5 shadow-[0_18px_60px_rgba(15,23,42,0.05)] backdrop-blur dark:border-white/8 dark:bg-white/5">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1A6BFF]/10 text-[#1A6BFF]"><feature.icon size={20} /></div>
-                <h3 className="mt-4 text-lg font-bold text-slate-900 dark:text-white">{feature.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">{feature.desc}</p>
+                <h3 className="mt-4 text-lg font-bold text-[#0E4FCC]">{feature.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#6A8CC0]">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -156,8 +167,8 @@ export default function LandingPage() {
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {dailyTips.map((tip) => (
                 <div key={tip.title} className="rounded-[1.4rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(239,246,255,0.76))] p-4 dark:border-white/8 dark:bg-white/4">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">{tip.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">{tip.body}</p>
+                  <p className="text-sm font-semibold text-[#0E4FCC]">{tip.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-[#6A8CC0]">{tip.body}</p>
                 </div>
               ))}
             </div>
@@ -171,12 +182,12 @@ export default function LandingPage() {
               <p>The same daily system tracks meals, water, steps, workouts, and dashboard summaries.</p>
             </div>
             <div className="mt-6 rounded-[1.4rem] border border-[#1A6BFF]/15 bg-[linear-gradient(135deg,rgba(26,107,255,0.10),rgba(14,165,233,0.06))] p-4">
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">Daily snapshot</p>
+              <p className="text-sm font-semibold text-[#0E4FCC]">Daily snapshot</p>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 {[{ label: 'Meals', value: '4' }, { label: 'Water', value: '2.4L' }, { label: 'Steps', value: '8.2k' }, { label: 'Burn', value: '420' }].map((item) => (
                   <div key={item.label} className="rounded-[1rem] bg-white/70 px-3 py-3 text-center dark:bg-white/6">
-                    <p className="text-lg font-bold text-slate-900 dark:text-white">{item.value}</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">{item.label}</p>
+                    <p className="text-lg font-bold text-[#0E4FCC]">{item.value}</p>
+                    <p className="text-[11px] text-[#6A8CC0]">{item.label}</p>
                   </div>
                 ))}
               </div>
@@ -189,7 +200,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl space-y-8">
           {/* Top row */}
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <span className="text-2xl font-extrabold text-[#1A6BFF]">Coachini</span>
+            <span className="text-2xl font-extrabold text-[#1A6BFF]">Progressi</span>
             <nav className="flex items-center gap-6 text-sm text-muted-foreground">
               <Link href="/auth/sign-up" className="transition-colors hover:text-foreground">{t(language, 'landing.ctaStart')}</Link>
               <Link href="/auth/login" className="transition-colors hover:text-foreground">{t(language, 'landing.ctaSignin')}</Link>
@@ -208,29 +219,44 @@ export default function LandingPage() {
           {/* Contact row */}
           <div className="rounded-[1.6rem] border border-white/65 bg-[linear-gradient(135deg,rgba(26,107,255,0.06),rgba(14,165,233,0.04))] px-6 py-5 dark:border-white/8 dark:bg-white/4">
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{t(language, 'landing.contactTitle')}</p>
-            <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
-              <a href="tel:+21625460" className="flex items-center gap-3 text-sm text-slate-600 transition-colors hover:text-[#1A6BFF] dark:text-slate-300">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#1A6BFF]/10">
-                  <Phone size={14} className="text-[#1A6BFF]" />
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <form onSubmit={handleContactSubmit} className="max-w-md flex-1">
+                <label htmlFor="footer-contact-email" className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1A6BFF]">
+                  Quick contact
+                </label>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <input
+                    id="footer-contact-email"
+                    type="email"
+                    value={contactEmail}
+                    onChange={(event) => setContactEmail(event.target.value)}
+                    placeholder="Your email"
+                    className="h-11 flex-1 rounded-xl border border-[#1A6BFF]/15 bg-white/85 px-4 text-sm text-[#0E4FCC] placeholder:text-[#6A8CC0] focus:outline-none focus:ring-2 focus:ring-[#1A6BFF]/25 dark:border-white/10 dark:bg-white/6 dark:text-white dark:placeholder:text-slate-400"
+                  />
+                  <button
+                    type="submit"
+                    className="h-11 rounded-xl bg-[#1A6BFF] px-5 text-sm font-semibold text-white transition hover:bg-[#1456d1]"
+                  >
+                    Contact
+                  </button>
                 </div>
-                <div>
-                  <p className="text-[11px] text-slate-400">{t(language, 'landing.contactPhone')}</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">+216 25 460</p>
-                </div>
-              </a>
-              <a href="mailto:youssefjmel42@gmail.com" className="flex items-center gap-3 text-sm text-slate-600 transition-colors hover:text-[#1A6BFF] dark:text-slate-300">
+              </form>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
+              <a href="mailto:jmelyoussef1@gmail.com" className="flex items-center gap-3 text-sm text-slate-600 transition-colors hover:text-[#1A6BFF] dark:text-slate-300">
                 <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#1A6BFF]/10">
                   <Mail size={14} className="text-[#1A6BFF]" />
                 </div>
                 <div>
                   <p className="text-[11px] text-slate-400">{t(language, 'landing.contactEmail')}</p>
-                  <p className="font-semibold text-slate-900 dark:text-white">youssefjmel42@gmail.com</p>
+                  <p className="font-semibold text-slate-900 dark:text-white">jmelyoussef1@gmail.com</p>
                 </div>
               </a>
+              </div>
             </div>
           </div>
 
-          <p className="text-center text-xs text-slate-400">© {new Date().getFullYear()} Coachini. All rights reserved.</p>
+          <p className="text-center text-xs text-slate-400">© {new Date().getFullYear()} Progressi. All rights reserved.</p>
         </div>
       </footer>
     </div>
