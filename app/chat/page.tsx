@@ -86,9 +86,9 @@ interface DailyWellness {
 const mealTypes: MealType[] = ['breakfast', 'lunch', 'dinner', 'snacks'];
 
 const chatCopy: Record<Language, Record<string, string>> = {
-  en: { intro: 'Describe meals, log exercise, or ask about your body. Parsed entries are editable before they save to your log.', loggedToday: 'Logged today', kcalConsumed: 'kcal consumed', quickPrompts: 'Quick prompts', todaysIntake: "Today's intake", noFood: 'No food logged yet today.', addSteps: 'Add steps', conversation: 'Conversation', oneThread: 'Meals, hydration, steps, and training in one thread', coachable: 'Describe the day like a coachable log', receipts: 'Meals become editable receipts. Water and steps stay visible in the sidebar.', mealReceipt: 'Meal Receipt', saved: 'Saved', saving: 'Saving...', saveToday: 'Save To Today', exerciseDraft: 'Exercise Draft' },
-  fr: { intro: 'Décrivez vos repas, enregistrez vos exercices ou posez une question sur votre corps. Les éléments détectés restent modifiables avant enregistrement.', loggedToday: "Enregistré aujourd'hui", kcalConsumed: 'kcal consommées', quickPrompts: 'Prompts rapides', todaysIntake: "Apport d'aujourd'hui", noFood: "Aucun aliment enregistré aujourd'hui.", addSteps: 'Ajouter des pas', conversation: 'Conversation', oneThread: 'Repas, hydratation, pas et entraînement dans un seul fil', coachable: 'Décrivez la journée comme un journal coachable', receipts: "Les repas deviennent des fiches modifiables. L'eau et les pas restent visibles sur le côté.", mealReceipt: 'Fiche repas', saved: 'Enregistré', saving: 'Enregistrement...', saveToday: "Enregistrer aujourd'hui", exerciseDraft: "Brouillon d'exercice" },
-  ar: { intro: 'صف وجباتك أو سجل تمرينك أو اسأل عن جسمك. العناصر المستخرجة تبقى قابلة للتعديل قبل حفظها.', loggedToday: 'المسجل اليوم', kcalConsumed: 'سعرة مستهلكة', quickPrompts: 'اقتراحات سريعة', todaysIntake: 'استهلاك اليوم', noFood: 'لا يوجد طعام مسجل اليوم.', addSteps: 'أضف خطوات', conversation: 'المحادثة', oneThread: 'الوجبات والترطيب والخطوات والتمرين في محادثة واحدة', coachable: 'صف يومك كأنه سجل قابل للتوجيه', receipts: 'تتحول الوجبات إلى بطاقات قابلة للتعديل، مع بقاء الماء والخطوات ظاهرة في الجانب.', mealReceipt: 'بطاقة الوجبة', saved: 'تم الحفظ', saving: 'جارٍ الحفظ...', saveToday: 'احفظ لليوم', exerciseDraft: 'مسودة تمرين' },
+  en: { intro: 'Describe meals, log exercise, or ask about your body. Parsed entries are editable before they save to your log.', loggedToday: 'Logged today', kcalConsumed: 'kcal consumed', quickPrompts: 'Quick prompts', todaysIntake: "Today's intake", noFood: 'No food logged yet today.', addSteps: 'Add steps', conversation: 'Conversation', oneThread: 'Meals, hydration, steps, and training in one thread', coachable: 'Describe the day like a coachable log', receipts: 'Meals become editable receipts. Water and steps stay visible in the sidebar.', mealReceipt: 'Meal Receipt', saved: 'Saved', saving: 'Saving...', saveToday: 'Save To Today', exerciseDraft: 'Exercise Draft', healthChat: 'Health Chat', water: 'Water', steps: 'Steps', hydration: 'Hydration', ofGoal: 'of goal' },
+  fr: { intro: 'Décrivez vos repas, enregistrez vos exercices ou posez une question sur votre corps. Les éléments détectés restent modifiables avant enregistrement.', loggedToday: "Enregistré aujourd'hui", kcalConsumed: 'kcal consommées', quickPrompts: 'Prompts rapides', todaysIntake: "Apport d'aujourd'hui", noFood: "Aucun aliment enregistré aujourd'hui.", addSteps: 'Ajouter des pas', conversation: 'Conversation', oneThread: 'Repas, hydratation, pas et entraînement dans un seul fil', coachable: 'Décrivez la journée comme un journal coachable', receipts: "Les repas deviennent des fiches modifiables. L'eau et les pas restent visibles sur le côté.", mealReceipt: 'Fiche repas', saved: 'Enregistré', saving: 'Enregistrement...', saveToday: "Enregistrer aujourd'hui", exerciseDraft: "Brouillon d'exercice", healthChat: 'Santé & Chat', water: 'Eau', steps: 'Pas', hydration: 'Hydratation', ofGoal: "de l'objectif" },
+  ar: { intro: 'صف وجباتك أو سجل تمرينك أو اسأل عن جسمك. العناصر المستخرجة تبقى قابلة للتعديل قبل حفظها.', loggedToday: 'المسجل اليوم', kcalConsumed: 'سعرة مستهلكة', quickPrompts: 'اقتراحات سريعة', todaysIntake: 'استهلاك اليوم', noFood: 'لا يوجد طعام مسجل اليوم.', addSteps: 'أضف خطوات', conversation: 'المحادثة', oneThread: 'الوجبات والترطيب والخطوات والتمرين في محادثة واحدة', coachable: 'صف يومك كأنه سجل قابل للتوجيه', receipts: 'تتحول الوجبات إلى بطاقات قابلة للتعديل، مع بقاء الماء والخطوات ظاهرة في الجانب.', mealReceipt: 'بطاقة الوجبة', saved: 'تم الحفظ', saving: 'جارٍ الحفظ...', saveToday: 'احفظ لليوم', exerciseDraft: 'مسودة تمرين', healthChat: 'دردشة الصحة', water: 'الماء', steps: 'الخطوات', hydration: 'الترطيب', ofGoal: 'من الهدف' },
 };
 
 function parseBlock<T>(content: string, tag: string): T[] | null {
@@ -377,11 +377,11 @@ export default function ChatPage() {
             </div>
             <div className="rounded-2xl border border-cyan-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
               <p className="text-lg font-black text-slate-950 dark:text-white">{(waterMl / 1000).toFixed(1)}L</p>
-              <p className="text-[10px] font-semibold text-cyan-600 uppercase tracking-wide">water</p>
+              <p className="text-[10px] font-semibold text-cyan-600 uppercase tracking-wide">{copy.water}</p>
             </div>
             <div className="rounded-2xl border border-emerald-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
               <p className="text-lg font-black text-slate-950 dark:text-white">{stepCount.toLocaleString()}</p>
-              <p className="text-[10px] font-semibold text-emerald-600 uppercase tracking-wide">steps</p>
+              <p className="text-[10px] font-semibold text-emerald-600 uppercase tracking-wide">{copy.steps}</p>
             </div>
           </div>
         </div>
@@ -390,7 +390,7 @@ export default function ChatPage() {
         <section className="hidden sm:block rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">Health Chat</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">{copy.healthChat}</p>
               <h1 className="mt-3 max-w-2xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">
                 {t(language, 'chat.title')}
               </h1>
@@ -404,14 +404,14 @@ export default function ChatPage() {
                   <p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcalConsumed}</p>
                 </div>
                 <div className="rounded-[1.4rem] border border-cyan-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-600">Water</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-600">{copy.water}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{(waterMl / 1000).toFixed(1)}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">of {(waterGoal / 1000).toFixed(1)} L</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.ofGoal} {(waterGoal / 1000).toFixed(1)} L</p>
                 </div>
                 <div className="rounded-[1.4rem] border border-emerald-200/70 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Steps</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">{copy.steps}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{stepCount.toLocaleString()}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">of {stepGoal.toLocaleString()}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.ofGoal} {stepGoal.toLocaleString()}</p>
                 </div>
               </div>
             </div>
@@ -448,7 +448,7 @@ export default function ChatPage() {
             {/* Today's intake */}
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{copy.todaysIntake}</p>
-              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">{Math.round(caloriesToday)} kcal logged</h2>
+              <h2 className="mt-1 text-xl font-bold text-slate-900 dark:text-white">{Math.round(caloriesToday)} {copy.kcalConsumed}</h2>
               <div className="mt-4 space-y-2">
                 {todayLogs.length === 0 ? (
                   <p className="rounded-[1.1rem] border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400">
@@ -473,7 +473,7 @@ export default function ChatPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Droplets size={15} className="text-cyan-500" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-600 dark:text-cyan-400">Hydration</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-600 dark:text-cyan-400">{copy.hydration}</p>
                 </div>
                 <span className="text-sm font-bold text-slate-900 dark:text-white">{(waterMl / 1000).toFixed(2)} / {(waterGoal / 1000).toFixed(1)} L</span>
               </div>
@@ -494,7 +494,7 @@ export default function ChatPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Footprints size={15} className="text-emerald-500" />
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">Steps</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-400">{copy.steps}</p>
                 </div>
                 <span className="text-sm font-bold text-slate-900 dark:text-white">{stepCount.toLocaleString()} / {stepGoal.toLocaleString()}</span>
               </div>

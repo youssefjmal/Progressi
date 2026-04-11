@@ -87,9 +87,81 @@ function StatCard({
 }
 
 const caloriesCopy: Record<Language, Record<string, string>> = {
-  en: { showLess: '↑ Show less', showAll: '↓ Show all concepts', snapshot: "Today's energy snapshot", dailyGuidance: 'Daily guidance', hydration: 'Hydration', steps: 'Steps', completeProfile: 'Complete your profile to unlock personalised calorie, macro, and hydration targets based on your body metrics.' },
-  fr: { showLess: '↑ Voir moins', showAll: '↓ Voir tous les concepts', snapshot: "Aperçu énergétique du jour", dailyGuidance: 'Guidance du jour', hydration: 'Hydratation', steps: 'Pas', completeProfile: 'Complétez votre profil pour débloquer des objectifs personnalisés en calories, macros et hydratation.' },
-  ar: { showLess: '↑ عرض أقل', showAll: '↓ اعرض كل المفاهيم', snapshot: 'ملخص طاقة اليوم', dailyGuidance: 'إرشادات اليوم', hydration: 'الترطيب', steps: 'الخطوات', completeProfile: 'أكمل ملفك لفتح أهداف مخصصة للسعرات والمغذيات والترطيب حسب بيانات جسمك.' },
+  en: {
+    showLess: '↑ Show less', showAll: '↓ Show all concepts',
+    snapshot: "Today's energy snapshot", dailyGuidance: 'Daily guidance',
+    hydration: 'Hydration', steps: 'Steps',
+    completeProfile: 'Complete your profile to unlock personalised calorie, macro, and hydration targets based on your body metrics.',
+    // Hero
+    kicker: 'Calories & Recovery',
+    heroHeading: 'Daily progress that feels like a',
+    heroHighlight: 'live coaching',
+    heroSuffix: 'screen.',
+    heroSub: 'Calories, macros, water, and steps — all in one place so you always know what\'s on track.',
+    // Hero stat cards
+    goal: 'Goal', kcalPlanned: 'kcal planned',
+    consumed: 'Consumed', pctOfTarget: '% of target',
+    remaining: 'Remaining', kcalLeft: 'kcal left today',
+    // Stat tiles
+    lblCalories: 'Calories', lblHydration: 'Hydration', lblSteps: 'Steps', lblMetabolic: 'Metabolic',
+    kcalAvailable: 'kcal still available', targetReached: 'Target reached today',
+    lRecommended: 'L recommended today', stepsToTarget: 'steps to target',
+    maintenanceEst: 'Maintenance estimate from profile', completeProfileShort: 'Complete profile to personalise',
+    // Charts
+    energyBalance: 'Energy balance', calorieProgress: 'Calorie progress', pctDone: '% done',
+    caloriePacing: 'Calorie pacing', macroDistribution: 'Macro distribution',
+    // Macro bars
+    protein: 'Protein', carbs: 'Carbs', fat: 'Fat',
+    target: 'Target', loggedSoFar: 'logged so far', trackedSoFar: 'tracked so far',
+    // aria-labels
+    toggleGuide: 'Toggle guide', dismissGuide: 'Dismiss guide',
+  },
+  fr: {
+    showLess: '↑ Voir moins', showAll: '↓ Voir tous les concepts',
+    snapshot: "Aperçu énergétique du jour", dailyGuidance: 'Guidance du jour',
+    hydration: 'Hydratation', steps: 'Pas',
+    completeProfile: 'Complétez votre profil pour débloquer des objectifs personnalisés en calories, macros et hydratation.',
+    kicker: 'Calories & Récupération',
+    heroHeading: 'Suivez vos progrès comme sur un',
+    heroHighlight: 'écran de coaching',
+    heroSuffix: 'en direct.',
+    heroSub: 'Calories, macros, eau et pas — tout en un pour toujours savoir où vous en êtes.',
+    goal: 'Objectif', kcalPlanned: 'kcal prévues',
+    consumed: 'Consommées', pctOfTarget: '% de l\'objectif',
+    remaining: 'Restant', kcalLeft: 'kcal restantes aujourd\'hui',
+    lblCalories: 'Calories', lblHydration: 'Hydratation', lblSteps: 'Pas', lblMetabolic: 'Métabolique',
+    kcalAvailable: 'kcal encore disponibles', targetReached: 'Objectif atteint aujourd\'hui',
+    lRecommended: 'L recommandés aujourd\'hui', stepsToTarget: 'pas avant l\'objectif',
+    maintenanceEst: 'Estimation de maintenance depuis le profil', completeProfileShort: 'Complétez le profil pour personnaliser',
+    energyBalance: 'Bilan énergétique', calorieProgress: 'Progression calorique', pctDone: '% atteint',
+    caloriePacing: 'Rythme calorique', macroDistribution: 'Répartition des macros',
+    protein: 'Protéines', carbs: 'Glucides', fat: 'Lipides',
+    target: 'Objectif', loggedSoFar: 'enregistrées jusqu\'ici', trackedSoFar: 'suivis jusqu\'ici',
+    toggleGuide: 'Afficher/masquer le guide', dismissGuide: 'Fermer le guide',
+  },
+  ar: {
+    showLess: '↑ عرض أقل', showAll: '↓ اعرض كل المفاهيم',
+    snapshot: 'ملخص طاقة اليوم', dailyGuidance: 'إرشادات اليوم',
+    hydration: 'الترطيب', steps: 'الخطوات',
+    completeProfile: 'أكمل ملفك لفتح أهداف مخصصة للسعرات والمغذيات والترطيب حسب بيانات جسمك.',
+    kicker: 'السعرات والتعافي',
+    heroHeading: 'تابع تقدمك كأنك أمام شاشة',
+    heroHighlight: 'تدريب مباشر',
+    heroSuffix: '',
+    heroSub: 'السعرات والمغذيات والماء والخطوات — كل شيء في مكان واحد.',
+    goal: 'الهدف', kcalPlanned: 'سعرة مخططة',
+    consumed: 'المستهلك', pctOfTarget: '% من الهدف',
+    remaining: 'المتبقي', kcalLeft: 'سعرة متبقية اليوم',
+    lblCalories: 'السعرات', lblHydration: 'الترطيب', lblSteps: 'الخطوات', lblMetabolic: 'الأيضي',
+    kcalAvailable: 'سعرة لا تزال متاحة', targetReached: 'تم بلوغ الهدف اليوم',
+    lRecommended: 'لتر موصى به اليوم', stepsToTarget: 'خطوة للوصول إلى الهدف',
+    maintenanceEst: 'تقدير الصيانة من الملف الشخصي', completeProfileShort: 'أكمل الملف للتخصيص',
+    energyBalance: 'توازن الطاقة', calorieProgress: 'تقدم السعرات', pctDone: '% مكتمل',
+    caloriePacing: 'وتيرة السعرات', macroDistribution: 'توزيع المغذيات',
+    protein: 'بروتين', carbs: 'كربوهيدرات', fat: 'دهون',
+    target: 'الهدف', loggedSoFar: 'مسجلة حتى الآن', trackedSoFar: 'مُتابعة حتى الآن',
+    toggleGuide: 'تبديل الدليل', dismissGuide: 'إغلاق الدليل',
+  },
 };
 
 export default function CaloriesPage() {
@@ -201,14 +273,14 @@ export default function CaloriesPage() {
                   <button
                     onClick={() => setGuideExpanded((v) => !v)}
                     className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/70 text-slate-500 transition hover:bg-white dark:bg-white/8 dark:hover:bg-white/14"
-                    aria-label="Toggle guide"
+                    aria-label={copy.toggleGuide}
                   >
                     {guideExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
                   </button>
                   <button
                     onClick={dismissGuide}
                     className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/70 text-slate-500 transition hover:bg-white dark:bg-white/8 dark:hover:bg-white/14"
-                    aria-label="Dismiss guide"
+                    aria-label={copy.dismissGuide}
                   >
                     <X size={15} />
                   </button>
@@ -289,15 +361,15 @@ export default function CaloriesPage() {
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-orange-300/50 bg-orange-50/80 px-3 py-1 dark:border-orange-500/20 dark:bg-orange-500/10">
                 <Flame size={13} className="text-orange-500" />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-orange-500">Calories & Recovery</span>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-orange-500">{copy.kicker}</span>
               </div>
               <h1 className="mt-4 max-w-xl text-4xl font-black leading-[1.12] tracking-tight text-slate-950 dark:text-white sm:text-5xl">
-                Daily progress that feels like a{' '}
-                <span className="bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">live coaching</span>{' '}
-                screen.
+                {copy.heroHeading}{' '}
+                <span className="bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">{copy.heroHighlight}</span>{' '}
+                {copy.heroSuffix}
               </h1>
               <p className="mt-4 max-w-lg text-sm leading-relaxed text-slate-500 dark:text-slate-400 sm:text-base">
-                Calories, macros, water, and steps — all in one place so you always know what&apos;s on track.
+                {copy.heroSub}
               </p>
 
               {/* Stat cards */}
@@ -305,23 +377,23 @@ export default function CaloriesPage() {
                 {/* Goal */}
                 <div className="relative overflow-hidden rounded-2xl border border-orange-200/60 bg-gradient-to-br from-orange-50 to-amber-50/60 p-4 dark:border-orange-500/20 dark:bg-gradient-to-br dark:from-orange-500/12 dark:to-amber-600/6">
                   <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-orange-400/20 blur-xl" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-500">Goal</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-500">{copy.goal}</p>
                   <p className="mt-2.5 text-3xl font-black tracking-tight text-slate-950 dark:text-white">{calorieGoal.toLocaleString()}</p>
-                  <p className="mt-0.5 text-xs font-medium text-slate-400">kcal planned</p>
+                  <p className="mt-0.5 text-xs font-medium text-slate-400">{copy.kcalPlanned}</p>
                 </div>
                 {/* Consumed */}
                 <div className="relative overflow-hidden rounded-2xl border border-blue-200/60 bg-gradient-to-br from-blue-50 to-indigo-50/60 p-4 dark:border-blue-500/20 dark:bg-gradient-to-br dark:from-blue-500/12 dark:to-indigo-600/6">
                   <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-blue-400/20 blur-xl" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-500">Consumed</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-500">{copy.consumed}</p>
                   <p className="mt-2.5 text-3xl font-black tracking-tight text-slate-950 dark:text-white">{Math.round(totalCalories).toLocaleString()}</p>
-                  <p className="mt-0.5 text-xs font-medium text-slate-400">{completion.toFixed(0)}% of target</p>
+                  <p className="mt-0.5 text-xs font-medium text-slate-400">{completion.toFixed(0)}{copy.pctOfTarget}</p>
                 </div>
                 {/* Remaining */}
                 <div className="relative overflow-hidden rounded-2xl border border-emerald-200/60 bg-gradient-to-br from-emerald-50 to-teal-50/60 p-4 dark:border-emerald-500/20 dark:bg-gradient-to-br dark:from-emerald-500/12 dark:to-teal-600/6">
                   <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-emerald-400/20 blur-xl" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500">Remaining</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500">{copy.remaining}</p>
                   <p className="mt-2.5 text-3xl font-black tracking-tight text-slate-950 dark:text-white">{remaining.toLocaleString()}</p>
-                  <p className="mt-0.5 text-xs font-medium text-slate-400">kcal left today</p>
+                  <p className="mt-0.5 text-xs font-medium text-slate-400">{copy.kcalLeft}</p>
                 </div>
               </div>
             </div>
@@ -351,20 +423,20 @@ export default function CaloriesPage() {
 
         {/* ── STAT TILES ───────────────────────────────────────── */}
         <section className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <StatCard label="Calories" value={Math.round(totalCalories).toString()} unit="kcal" accent="#F97316"
-            helper={remaining > 0 ? `${remaining} kcal still available` : "Target reached today"}
+          <StatCard label={copy.lblCalories} value={Math.round(totalCalories).toString()} unit="kcal" accent="#F97316"
+            helper={remaining > 0 ? `${remaining} ${copy.kcalAvailable}` : copy.targetReached}
             icon={<Flame size={18} />}
           />
-          <StatCard label="Hydration" value={(waterMl / 1000).toFixed(1)} unit="L" accent="#06B6D4"
-            helper={`${(waterTargetMl / 1000).toFixed(1)} L recommended today`}
+          <StatCard label={copy.lblHydration} value={(waterMl / 1000).toFixed(1)} unit="L" accent="#06B6D4"
+            helper={`${(waterTargetMl / 1000).toFixed(1)} ${copy.lRecommended}`}
             icon={<GlassWater size={18} />}
           />
-          <StatCard label="Steps" value={stepCount.toLocaleString()} unit="steps" accent="#10B981"
-            helper={`${Math.max(stepTarget - stepCount, 0).toLocaleString()} steps to target`}
+          <StatCard label={copy.lblSteps} value={stepCount.toLocaleString()} unit={copy.steps} accent="#10B981"
+            helper={`${Math.max(stepTarget - stepCount, 0).toLocaleString()} ${copy.stepsToTarget}`}
             icon={<Footprints size={18} />}
           />
-          <StatCard label="Metabolic" value={(metrics?.tdee ?? calorieGoal).toString()} unit="kcal" accent="#8B5CF6"
-            helper={metrics ? 'Maintenance estimate from profile' : 'Complete profile to personalise'}
+          <StatCard label={copy.lblMetabolic} value={(metrics?.tdee ?? calorieGoal).toString()} unit="kcal" accent="#8B5CF6"
+            helper={metrics ? copy.maintenanceEst : copy.completeProfileShort}
             icon={<TrendingUp size={18} />}
           />
         </section>
@@ -377,11 +449,11 @@ export default function CaloriesPage() {
             <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-orange-400/10 blur-3xl" />
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-500">Energy balance</p>
-                <h2 className="mt-1.5 text-2xl font-bold text-slate-950 dark:text-white">Calorie progress</h2>
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-orange-500">{copy.energyBalance}</p>
+                <h2 className="mt-1.5 text-2xl font-bold text-slate-950 dark:text-white">{copy.calorieProgress}</h2>
               </div>
               <span className="rounded-full border border-slate-200/80 bg-white/90 px-4 py-1.5 text-sm font-bold text-slate-600 shadow-sm dark:border-white/8 dark:bg-white/5 dark:text-slate-300">
-                {completion.toFixed(0)}% done
+                {completion.toFixed(0)}{copy.pctDone}
               </span>
             </div>
 
@@ -392,7 +464,7 @@ export default function CaloriesPage() {
             {/* Progress bar below ring */}
             <div className="mt-8 rounded-[1.4rem] border border-slate-200/70 bg-slate-50/80 p-4 dark:border-white/6 dark:bg-white/3">
               <div className="mb-2.5 flex items-center justify-between text-sm">
-                <span className="font-semibold text-slate-900 dark:text-white">Calorie pacing</span>
+                <span className="font-semibold text-slate-900 dark:text-white">{copy.caloriePacing}</span>
                 <span className="text-slate-400">{Math.round(totalCalories).toLocaleString()} / {calorieGoal.toLocaleString()} kcal</span>
               </div>
               <div className="h-3 overflow-hidden rounded-full bg-slate-200 dark:bg-white/8">
@@ -414,16 +486,16 @@ export default function CaloriesPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#1A6BFF]">{t(language, 'calories.macros')}</p>
-                  <h2 className="mt-1.5 text-2xl font-bold text-slate-950 dark:text-white">Macro distribution</h2>
+                  <h2 className="mt-1.5 text-2xl font-bold text-slate-950 dark:text-white">{copy.macroDistribution}</h2>
                 </div>
                 <div className="rounded-xl bg-[#1A6BFF]/10 p-2.5 text-[#1A6BFF]">
                   <Target size={18} />
                 </div>
               </div>
               <div className="mt-6 space-y-5">
-                <MacroBar label="Protein" eaten={totalProtein} target={proteinGoal} color="#3B82F6" />
-                <MacroBar label="Carbs" eaten={totalCarbs} target={carbsGoal} color="#10B981" />
-                <MacroBar label="Fat" eaten={totalFat} target={fatGoal} color="#F59E0B" />
+                <MacroBar label={copy.protein} eaten={totalProtein} target={proteinGoal} color="#3B82F6" />
+                <MacroBar label={copy.carbs} eaten={totalCarbs} target={carbsGoal} color="#10B981" />
+                <MacroBar label={copy.fat} eaten={totalFat} target={fatGoal} color="#F59E0B" />
               </div>
             </div>
 
@@ -441,7 +513,7 @@ export default function CaloriesPage() {
                     style={{ background: m.color }} />
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">{m.label}</p>
                   <p className="mt-2.5 text-2xl font-black text-slate-950 dark:text-white">{Math.round(m.value)}g</p>
-                  <p className="mt-0.5 text-xs text-slate-400">Target {m.target}g</p>
+                  <p className="mt-0.5 text-xs text-slate-400">{copy.target} {m.target}g</p>
                   <div className="mt-3.5 h-2 overflow-hidden rounded-full bg-white/40 dark:bg-white/8">
                     <div className="h-full rounded-full transition-all duration-700"
                       style={{ width: `${Math.min((m.value / m.target) * 100, 100)}%`, background: m.color }} />
@@ -460,7 +532,7 @@ export default function CaloriesPage() {
                     <p className="text-sm font-semibold text-slate-900 dark:text-white">{copy.hydration}</p>
                   </div>
                   <p className="mt-2 text-2xl font-black text-slate-950 dark:text-white">{(waterTargetMl / 1000).toFixed(1)} L</p>
-                  <p className="text-xs text-slate-400">{(waterMl / 1000).toFixed(1)} L logged so far</p>
+                  <p className="text-xs text-slate-400">{(waterMl / 1000).toFixed(1)} L {copy.loggedSoFar}</p>
                 </div>
                 <div className="rounded-[1.4rem] border border-emerald-200/60 bg-white/70 p-4 dark:border-emerald-500/15 dark:bg-white/4">
                   <div className="flex items-center gap-2">
@@ -468,7 +540,7 @@ export default function CaloriesPage() {
                     <p className="text-sm font-semibold text-slate-900 dark:text-white">{copy.steps}</p>
                   </div>
                   <p className="mt-2 text-2xl font-black text-slate-950 dark:text-white">{stepTarget.toLocaleString()}</p>
-                  <p className="text-xs text-slate-400">{stepCount.toLocaleString()} tracked so far</p>
+                  <p className="text-xs text-slate-400">{stepCount.toLocaleString()} {copy.trackedSoFar}</p>
                 </div>
               </div>
             </div>
