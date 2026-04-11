@@ -104,7 +104,7 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="hidden md:flex flex-col w-64 shrink-0 min-h-screen sticky top-0 border-r border-slate-100 dark:border-white/[0.05] bg-white dark:bg-[#07101e]">
+    <aside className="hidden md:flex flex-col w-64 shrink-0 h-screen overflow-y-auto sticky top-0 border-r border-slate-100 dark:border-white/[0.05] bg-white dark:bg-[#07101e]">
       {/* Top gradient accent */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-[#1A6BFF]/[0.04] to-transparent dark:from-[#1A6BFF]/[0.08]" />
 

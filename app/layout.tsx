@@ -50,7 +50,7 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             <AuthModalProvider>
-              <div className="flex min-h-screen">
+              <div className="flex min-h-screen items-start">
                 <SidebarWrapper />
                 <div className="flex-1 min-w-0 pb-20 md:pb-0">
                   {children}
