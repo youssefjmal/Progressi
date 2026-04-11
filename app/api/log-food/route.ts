@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { logFoodItems } from '@/lib/food-logging';
 
 interface FoodItem {
@@ -14,8 +15,8 @@ interface FoodItem {
 
 export async function POST(req: Request) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const userSupabase = await createClient();
+    const { data: { user } } = await userSupabase.auth.getUser();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { items }: { items: FoodItem[] } = await req.json();
@@ -23,7 +24,8 @@ export async function POST(req: Request) {
       return Response.json({ error: 'No items provided' }, { status: 400 });
     }
 
-    const { logged } = await logFoodItems(supabase, user.id, items);
+    const adminSupabase = createAdminClient();
+    const { logged } = await logFoodItems(adminSupabase, userSupabase, user.id, items);
     if (logged === 0) {
       return Response.json({ error: 'No items could be saved. Check your food data.' }, { status: 422 });
     }

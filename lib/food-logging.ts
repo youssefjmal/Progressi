@@ -1,10 +1,5 @@
-type MinimalSupabase = {
-  from: (table: string) => {
-    select: (columns: string) => any;
-    insert: (values: Record<string, unknown>) => any;
-    upsert: (values: Record<string, unknown>, options?: Record<string, unknown>) => any;
-  };
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MinimalSupabase = { from: (table: string) => any };
 
 export interface FoodItemInput {
   name: string;
@@ -47,8 +42,18 @@ function normalizeFoodItem(item: FoodItemInput): FoodItemInput | null {
   };
 }
 
+/**
+ * Log food items to the database.
+ *
+ * @param adminSupabase  Service-role client — used for foods table (bypasses RLS so
+ *                       AI-generated foods that don't exist yet can be inserted).
+ * @param userSupabase   Session client  — used for food_logs (RLS enforces user_id ownership).
+ * @param userId         Authenticated user's ID.
+ * @param items          Food items to log.
+ */
 export async function logFoodItems(
-  supabase: MinimalSupabase,
+  adminSupabase: MinimalSupabase,
+  userSupabase: MinimalSupabase,
   userId: string,
   items: FoodItemInput[],
 ) {
@@ -58,8 +63,8 @@ export async function logFoodItems(
     const item = normalizeFoodItem(rawItem);
     if (!item) continue;
 
-    // Find existing food by case-insensitive name match (the DB constraint is on lower(name))
-    const { data: existing } = await supabase
+    // Case-insensitive lookup — the DB constraint is on lower(name)
+    const { data: existing } = await adminSupabase
       .from('foods')
       .select('id')
       .ilike('name', item.name)
@@ -69,8 +74,9 @@ export async function logFoodItems(
     let foodId: string | undefined = (existing as { id: string } | null)?.id;
 
     if (!foodId) {
-      // Insert new food row
-      const { data: inserted, error: insertErr } = await supabase
+      // Insert new food using admin client (bypasses RLS — authenticated users
+      // may not have INSERT permission on the shared foods table)
+      const { data: inserted, error: insertErr } = await adminSupabase
         .from('foods')
         .insert({
           name: item.name,
@@ -95,7 +101,8 @@ export async function logFoodItems(
 
     if (!foodId) continue;
 
-    const { error: logErr } = await supabase.from('food_logs').insert({
+    // Log using the user's session client so RLS can verify user_id ownership
+    const { error: logErr } = await userSupabase.from('food_logs').insert({
       user_id: userId,
       food_id: foodId,
       meal_type: item.meal_type || 'snacks',
