@@ -58,13 +58,21 @@ export async function logFoodItems(
     const item = normalizeFoodItem(rawItem);
     if (!item) continue;
 
-    // Upsert into foods using the lower(name) unique index.
-    // This is race-safe: concurrent inserts for the same food name will
-    // resolve to the same row instead of creating duplicates.
-    const { data: upserted, error: upsertErr } = await supabase
+    // Find existing food by case-insensitive name match (the DB constraint is on lower(name))
+    const { data: existing } = await supabase
       .from('foods')
-      .upsert(
-        {
+      .select('id')
+      .ilike('name', item.name)
+      .limit(1)
+      .maybeSingle();
+
+    let foodId: string | undefined = (existing as { id: string } | null)?.id;
+
+    if (!foodId) {
+      // Insert new food row
+      const { data: inserted, error: insertErr } = await supabase
+        .from('foods')
+        .insert({
           name: item.name,
           calories: item.calories,
           protein: item.protein ?? 0,
@@ -73,18 +81,18 @@ export async function logFoodItems(
           serving_size: item.quantity,
           serving_unit: item.unit,
           category: 'Chat Logged',
-        },
-        { onConflict: 'name', ignoreDuplicates: false },
-      )
-      .select('id')
-      .single();
+        })
+        .select('id')
+        .single();
 
-    if (upsertErr) {
-      console.error('Food upsert error:', upsertErr.code, upsertErr.message);
-      continue;
+      if (insertErr) {
+        console.error('Food insert error:', insertErr.code, insertErr.message);
+        continue;
+      }
+
+      foodId = (inserted as { id: string } | null)?.id;
     }
 
-    const foodId = upserted?.id as string | undefined;
     if (!foodId) continue;
 
     const { error: logErr } = await supabase.from('food_logs').insert({

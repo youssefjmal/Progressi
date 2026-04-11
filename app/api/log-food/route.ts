@@ -24,6 +24,9 @@ export async function POST(req: Request) {
     }
 
     const { logged } = await logFoodItems(supabase, user.id, items);
+    if (logged === 0) {
+      return Response.json({ error: 'No items could be saved. Check your food data.' }, { status: 422 });
+    }
     return Response.json({ logged });
   } catch (err) {
     console.error('log-food error:', err);
