@@ -220,9 +220,41 @@ export default function FoodPage() {
   if (!user) return null;
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe_0%,#eff6ff_34%,#f8fbff_74%,#ffffff_100%)] px-4 py-6 pb-24 dark:bg-[radial-gradient(circle_at_top,#1e3a8a_0%,#0f172a_42%,#020617_100%)] sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe_0%,#eff6ff_34%,#f8fbff_74%,#ffffff_100%)] px-4 py-6 pb-28 dark:bg-[radial-gradient(circle_at_top,#1e3a8a_0%,#0f172a_42%,#020617_100%)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <section className="rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
+
+        {/* ── Mobile compact header ───────────────────────────── */}
+        <div className="sm:hidden mb-4">
+          <h1 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">{t(language, 'food.title')}</h1>
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <div className="rounded-2xl border border-blue-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
+              <p className="text-xl font-black text-slate-950 dark:text-white">{Math.round(totals.calories)}</p>
+              <p className="text-[10px] font-semibold text-[#1A6BFF] uppercase tracking-wide">kcal</p>
+            </div>
+            <div className="rounded-2xl border border-emerald-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
+              <p className="text-xl font-black text-slate-950 dark:text-white">{remaining}</p>
+              <p className="text-[10px] font-semibold text-emerald-600 uppercase tracking-wide">left</p>
+            </div>
+            <div className="rounded-2xl border border-violet-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
+              <p className="text-xl font-black text-slate-950 dark:text-white">{Math.round(completion)}%</p>
+              <p className="text-[10px] font-semibold text-violet-600 uppercase tracking-wide">done</p>
+            </div>
+          </div>
+          {/* Mobile quick-add row */}
+          <div className="mt-3 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {MEAL_TYPES.map((meal) => (
+              <button key={meal} type="button"
+                onClick={() => { setActiveMealForModal(meal); setModalOpen(true); setSelectedFood(null); setSearchQuery(''); setQuantity('100'); }}
+                className="flex-shrink-0 flex items-center gap-1.5 rounded-2xl border border-[#1A6BFF]/30 bg-[#1A6BFF]/8 px-4 py-2.5 text-sm font-semibold text-[#1A6BFF]"
+              >
+                <Plus size={14} />{t(language, `food.${meal}`)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Desktop hero ────────────────────────────────────── */}
+        <section className="hidden sm:block rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">{t(language, 'food.title')}</p>
@@ -255,8 +287,8 @@ export default function FoodPage() {
           </div>
         </section>
 
-        <section className="mt-6 grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
-          <aside className="space-y-5 xl:sticky xl:top-24 xl:self-start">
+        <section className="mt-4 grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
+          <aside className="space-y-5 xl:sticky xl:top-24 xl:self-start order-2 xl:order-1 hidden sm:block">
             <div className="rounded-[2rem] border border-white/70 bg-white/84 p-5 shadow-[0_30px_100px_rgba(15,23,42,0.08)] backdrop-blur dark:border-white/10 dark:bg-white/5">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1A6BFF]">{t(language, 'food.todaysTotals')}</p>
               <div className="mt-5 space-y-4">
@@ -279,7 +311,7 @@ export default function FoodPage() {
             </div>
           </aside>
 
-          <div className="space-y-5">
+          <div className="space-y-5 order-1 xl:order-2">
             {MEAL_TYPES.map((meal) => {
               const items = mealItems(meal);
               const meta = MEAL_META[meal];
@@ -330,12 +362,21 @@ export default function FoodPage() {
         </section>
 
         <Dialog open={modalOpen} onOpenChange={(open) => { if (!open) { setModalOpen(false); setSelectedFood(null); setSearchQuery(''); setQuantity('100'); setUsdaFoods([]); } }}>
-          <DialogContent className="max-h-[88vh] max-w-2xl overflow-hidden rounded-[2rem] border border-white/70 bg-white/95 p-0 shadow-[0_40px_120px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-slate-950">
-            <DialogHeader className="border-b border-slate-200/80 px-6 pb-4 pt-6 dark:border-white/10"><DialogTitle className="text-2xl font-bold text-slate-950 dark:text-white">{t(language, 'food.addFood')} to {t(language, `food.${activeMealForModal}`)}</DialogTitle></DialogHeader>
+          <DialogContent className="max-h-[92vh] max-w-2xl overflow-hidden rounded-[2rem] border border-white/70 bg-white/95 p-0 shadow-[0_40px_120px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-slate-950">
+            <DialogHeader className="border-b border-slate-200/80 px-5 pb-3 pt-5 dark:border-white/10">
+              <div className="flex items-center gap-3">
+                {selectedFood && (
+                  <button type="button" onClick={() => setSelectedFood(null)} className="lg:hidden flex h-8 w-8 items-center justify-center rounded-xl bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300">
+                    ←
+                  </button>
+                )}
+                <DialogTitle className="text-xl font-bold text-slate-950 dark:text-white">{t(language, 'food.addFood')} — {t(language, `food.${activeMealForModal}`)}</DialogTitle>
+              </div>
+            </DialogHeader>
             <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="border-b border-slate-200/80 p-6 dark:border-white/10 lg:border-b-0 lg:border-r">
+              <div className={`border-b border-slate-200/80 p-5 dark:border-white/10 lg:border-b-0 lg:border-r ${selectedFood ? 'hidden lg:block' : 'block'}`}>
                 <div className="relative"><Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><Input placeholder={t(language, 'food.searchPlaceholder')} value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value); setSelectedFood(null); }} className="h-12 rounded-2xl border-slate-200/80 pl-11 input-glow" /></div>
-                <div className="mt-5 max-h-[52vh] space-y-3 overflow-y-auto pr-1">
+                <div className="mt-4 max-h-[58vh] space-y-2 overflow-y-auto pr-1">
                   {searchQuery ? (
                     <>
                       {filteredFoods.slice(0, 8).map((food) => (
@@ -356,7 +397,7 @@ export default function FoodPage() {
                   )}
                 </div>
               </div>
-              <div className="bg-[linear-gradient(180deg,#eff6ff,#ffffff)] p-6 dark:bg-[linear-gradient(180deg,rgba(30,41,59,0.84),rgba(15,23,42,0.94))]">
+              <div className={`bg-[linear-gradient(180deg,#eff6ff,#ffffff)] p-5 dark:bg-[linear-gradient(180deg,rgba(30,41,59,0.84),rgba(15,23,42,0.94))] ${selectedFood ? 'block' : 'hidden lg:block'}`}>
                 {selectedFood ? (
                   <div className="space-y-4">
                     <div className="rounded-[1.4rem] border border-white/80 bg-white/90 p-4 dark:border-white/10 dark:bg-white/5">

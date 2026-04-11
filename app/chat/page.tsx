@@ -364,11 +364,30 @@ export default function ChatPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe_0%,#eff6ff_34%,#f8fbff_74%,#ffffff_100%)] px-4 py-6 pb-24 dark:bg-[radial-gradient(circle_at_top,#1e3a8a_0%,#0f172a_42%,#020617_100%)] sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe_0%,#eff6ff_34%,#f8fbff_74%,#ffffff_100%)] px-4 py-6 pb-28 dark:bg-[radial-gradient(circle_at_top,#1e3a8a_0%,#0f172a_42%,#020617_100%)] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
 
-        {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
+        {/* ── Mobile compact header ───────────────────────────── */}
+        <div className="sm:hidden mb-4">
+          <h1 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">{t(language, 'chat.title')}</h1>
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <div className="rounded-2xl border border-blue-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
+              <p className="text-lg font-black text-slate-950 dark:text-white">{Math.round(caloriesToday)}</p>
+              <p className="text-[10px] font-semibold text-[#1A6BFF] uppercase tracking-wide">kcal</p>
+            </div>
+            <div className="rounded-2xl border border-cyan-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
+              <p className="text-lg font-black text-slate-950 dark:text-white">{(waterMl / 1000).toFixed(1)}L</p>
+              <p className="text-[10px] font-semibold text-cyan-600 uppercase tracking-wide">water</p>
+            </div>
+            <div className="rounded-2xl border border-emerald-200/70 bg-white/90 p-3 text-center dark:border-white/10 dark:bg-white/5">
+              <p className="text-lg font-black text-slate-950 dark:text-white">{stepCount.toLocaleString()}</p>
+              <p className="text-[10px] font-semibold text-emerald-600 uppercase tracking-wide">steps</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Hero (desktop only) ──────────────────────────────── */}
+        <section className="hidden sm:block rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A6BFF]">Health Chat</p>
