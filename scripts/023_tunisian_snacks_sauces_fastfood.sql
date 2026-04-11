@@ -77,11 +77,4 @@ VALUES
   ('Ojja Merguez (restaurant)',     230, 14.0,  8.0, 16.0, 150, 'g', 'Tunisian Fast Food'),
   ('Lablebi (restaurant)',          310, 13.0, 42.0,  9.0, 280, 'g', 'Tunisian Fast Food')
 
-ON CONFLICT ON CONSTRAINT foods_name_lower_uq DO UPDATE
-  SET calories     = EXCLUDED.calories,
-      protein      = EXCLUDED.protein,
-      carbs        = EXCLUDED.carbs,
-      fat          = EXCLUDED.fat,
-      serving_size = EXCLUDED.serving_size,
-      serving_unit = EXCLUDED.serving_unit,
-      category     = EXCLUDED.category;
+ON CONFLICT DO NOTHING;

@@ -121,11 +121,4 @@ VALUES
   ('Lben (Lait fermenté 200ml)',   72,  5.5,  9.0,  1.5, 200, 'ml', 'Drinks'),
   ('Jus Grenadine (dilué 200ml)',  80,  0.0, 20.0,  0.0, 200, 'ml', 'Drinks')
 
-ON CONFLICT ON CONSTRAINT foods_name_lower_uq DO UPDATE
-  SET calories     = EXCLUDED.calories,
-      protein      = EXCLUDED.protein,
-      carbs        = EXCLUDED.carbs,
-      fat          = EXCLUDED.fat,
-      serving_size = EXCLUDED.serving_size,
-      serving_unit = EXCLUDED.serving_unit,
-      category     = EXCLUDED.category;
+ON CONFLICT DO NOTHING;
