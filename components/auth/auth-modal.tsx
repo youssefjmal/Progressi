@@ -24,6 +24,14 @@ const modalCopy = {
     confirmationSent: 'We sent a confirmation link to',
     confirmationAction: 'Click it to activate your account.',
     backToSignIn: 'Back to Sign In',
+    // Forgot password
+    forgotTitle: 'Reset your password',
+    forgotSubtitle: "Enter your email and we'll send a reset link",
+    sendLink: 'Send Reset Link',
+    sending: 'Sending...',
+    emailSent: 'Reset link sent! Check your inbox.',
+    noAccount: 'No account found with this email.',
+    unknownError: 'An error occurred',
   },
   fr: {
     loginFailed: 'Échec de la connexion',
@@ -34,6 +42,13 @@ const modalCopy = {
     confirmationSent: 'Nous avons envoyé un lien de confirmation à',
     confirmationAction: 'Cliquez dessus pour activer votre compte.',
     backToSignIn: 'Retour à la connexion',
+    forgotTitle: 'Réinitialiser votre mot de passe',
+    forgotSubtitle: 'Entrez votre e-mail pour recevoir un lien de réinitialisation',
+    sendLink: 'Envoyer le lien',
+    sending: 'Envoi...',
+    emailSent: 'Lien envoyé ! Vérifiez votre boîte mail.',
+    noAccount: 'Aucun compte trouvé avec cet e-mail.',
+    unknownError: 'Une erreur est survenue',
   },
   ar: {
     loginFailed: 'فشل تسجيل الدخول',
@@ -44,6 +59,13 @@ const modalCopy = {
     confirmationSent: 'لقد أرسلنا رابط التأكيد إلى',
     confirmationAction: 'اضغط عليه لتفعيل حسابك.',
     backToSignIn: 'العودة إلى تسجيل الدخول',
+    forgotTitle: 'إعادة تعيين كلمة المرور',
+    forgotSubtitle: 'أدخل بريدك الإلكتروني لإرسال رابط إعادة التعيين',
+    sendLink: 'إرسال الرابط',
+    sending: 'جارٍ الإرسال...',
+    emailSent: 'تم إرسال الرابط! تحقق من بريدك.',
+    noAccount: 'لم يتم العثور على حساب بهذا البريد.',
+    unknownError: 'حدث خطأ',
   },
 } as const;
 
@@ -68,6 +90,13 @@ export function AuthModal() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [showSignupPassword, setShowSignupPassword] = useState(false);
+
+  // Forgot password state
+  const [modalView, setModalView] = useState<'default' | 'forgot'>('default');
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotError, setForgotError] = useState<string | null>(null);
+  const [forgotSuccess, setForgotSuccess] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,11 +137,39 @@ export function AuthModal() {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotError(null);
+    setIsSending(true);
+    try {
+      const res = await fetch('/api/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const { exists } = await res.json();
+      if (!exists) {
+        setForgotError(copy.noAccount);
+        return;
+      }
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+        redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+      });
+      if (error) throw error;
+      setForgotSuccess(true);
+    } catch (err: unknown) {
+      setForgotError(err instanceof Error ? err.message : copy.unknownError);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   const reset = () => {
     setEmail(''); setPassword(''); setError(null);
     setSignupEmail(''); setSignupPassword(''); setSignupName('');
     setSignupError(null); setSignupSuccess(false);
     setShowPassword(false); setShowSignupPassword(false);
+    setModalView('default'); setForgotEmail(''); setForgotError(null); setForgotSuccess(false);
   };
 
   if (!isOpen) return null;
@@ -170,8 +227,60 @@ export function AuthModal() {
               <span className="text-2xl font-extrabold text-[#1A6BFF]">Progressi</span>
             </div>
 
+            {/* FORGOT PASSWORD */}
+            {view === 'login' && modalView === 'forgot' && (
+              <>
+                <h3 className="font-bold text-foreground mb-1">{copy.forgotTitle}</h3>
+                <p className="text-xs text-muted-foreground mb-4">{copy.forgotSubtitle}</p>
+                {forgotSuccess ? (
+                  <div className="py-4 text-center">
+                    <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-3">
+                      <span className="text-2xl">✉️</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">{copy.emailSent}</p>
+                    <button
+                      type="button"
+                      onClick={() => { setModalView('default'); setForgotSuccess(false); setForgotEmail(''); }}
+                      className="text-sm text-[#1A6BFF] hover:underline"
+                    >
+                      ← {copy.backToSignIn}
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleForgotPassword} className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label>{t(language, 'auth.email')}</Label>
+                      <Input
+                        type="email"
+                        placeholder="you@example.com"
+                        required
+                        value={forgotEmail}
+                        onChange={(e) => setForgotEmail(e.target.value)}
+                        className="input-glow"
+                      />
+                    </div>
+                    {forgotError && (
+                      <div className="px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-sm text-destructive">
+                        {forgotError}
+                      </div>
+                    )}
+                    <Button type="submit" disabled={isSending} className="w-full gradient-btn rounded-xl">
+                      {isSending ? copy.sending : copy.sendLink}
+                    </Button>
+                    <button
+                      type="button"
+                      onClick={() => { setModalView('default'); setForgotError(null); setForgotEmail(''); }}
+                      className="w-full text-sm text-muted-foreground hover:text-foreground text-center"
+                    >
+                      ← {copy.backToSignIn}
+                    </button>
+                  </form>
+                )}
+              </>
+            )}
+
             {/* LOGIN */}
-            {view === 'login' && (
+            {view === 'login' && modalView === 'default' && (
               <form onSubmit={handleLogin} className="space-y-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="modal-email">{t(language, 'auth.email')}</Label>
@@ -186,7 +295,16 @@ export function AuthModal() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="modal-password">{t(language, 'auth.password')}</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="modal-password">{t(language, 'auth.password')}</Label>
+                    <button
+                      type="button"
+                      onClick={() => { setModalView('forgot'); setError(null); }}
+                      className="text-xs text-[#1A6BFF] hover:underline"
+                    >
+                      {t(language, 'auth.forgotPassword')}
+                    </button>
+                  </div>
                   <div className="relative">
                     <Input
                       id="modal-password"

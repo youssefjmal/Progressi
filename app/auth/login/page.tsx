@@ -20,6 +20,14 @@ const loginCopy = {
     google: 'Continue with Google',
     soon: 'Coming soon',
     unknownError: 'An error occurred',
+    // Forgot password
+    forgotTitle: 'Reset your password',
+    forgotSubtitle: "Enter your email and we'll send you a reset link",
+    sendLink: 'Send Reset Link',
+    sending: 'Sending...',
+    backToLogin: 'Back to Sign In',
+    emailSent: "Reset link sent! Check your inbox.",
+    noAccount: 'No account found with this email.',
   },
   fr: {
     welcome: 'Bon retour dans votre parcours fitness',
@@ -28,6 +36,13 @@ const loginCopy = {
     google: 'Continuer avec Google',
     soon: 'Bientôt disponible',
     unknownError: 'Une erreur est survenue',
+    forgotTitle: 'Réinitialiser votre mot de passe',
+    forgotSubtitle: 'Entrez votre e-mail pour recevoir un lien de réinitialisation',
+    sendLink: 'Envoyer le lien',
+    sending: 'Envoi...',
+    backToLogin: 'Retour à la connexion',
+    emailSent: 'Lien envoyé ! Vérifiez votre boîte mail.',
+    noAccount: 'Aucun compte trouvé avec cet e-mail.',
   },
   ar: {
     welcome: 'مرحباً بعودتك إلى رحلتك الصحية',
@@ -36,6 +51,13 @@ const loginCopy = {
     google: 'المتابعة عبر Google',
     soon: 'قريباً',
     unknownError: 'حدث خطأ',
+    forgotTitle: 'إعادة تعيين كلمة المرور',
+    forgotSubtitle: 'أدخل بريدك الإلكتروني لإرسال رابط إعادة التعيين',
+    sendLink: 'إرسال الرابط',
+    sending: 'جارٍ الإرسال...',
+    backToLogin: 'العودة إلى تسجيل الدخول',
+    emailSent: 'تم إرسال الرابط! تحقق من بريدك.',
+    noAccount: 'لم يتم العثور على حساب بهذا البريد.',
   },
 } as const;
 
@@ -47,6 +69,13 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  // Forgot password state
+  const [view, setView] = useState<'login' | 'forgot'>('login');
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotError, setForgotError] = useState<string | null>(null);
+  const [forgotSuccess, setForgotSuccess] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+
   const router = useRouter();
   const { language } = useLanguage();
   const copy = loginCopy[language];
@@ -68,6 +97,35 @@ export default function LoginPage() {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotError(null);
+    setIsSending(true);
+    try {
+      // Check if email exists
+      const res = await fetch('/api/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const { exists } = await res.json();
+      if (!exists) {
+        setForgotError(copy.noAccount);
+        return;
+      }
+      const supabase = createClient();
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+        redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+      });
+      if (error) throw error;
+      setForgotSuccess(true);
+    } catch (err: unknown) {
+      setForgotError(err instanceof Error ? err.message : copy.unknownError);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F5F7FA] dark:bg-[#0A0A0F] px-4 py-12">
       <div className="w-full max-w-md">
@@ -83,6 +141,62 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          {/* ── FORGOT PASSWORD VIEW ── */}
+          {view === 'forgot' && (
+            <>
+              <h2 className="text-xl font-bold text-foreground mb-1">{copy.forgotTitle}</h2>
+              <p className="text-sm text-muted-foreground mb-6">{copy.forgotSubtitle}</p>
+              {forgotSuccess ? (
+                <div className="py-6 text-center">
+                  <div className="w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">✉️</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{copy.emailSent}</p>
+                  <button
+                    type="button"
+                    onClick={() => { setView('login'); setForgotSuccess(false); setForgotEmail(''); }}
+                    className="mt-4 text-sm text-[#1A6BFF] hover:underline"
+                  >
+                    {copy.backToLogin}
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleForgotPassword} className="space-y-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="forgot-email">{t(language, 'auth.email')}</Label>
+                    <Input
+                      id="forgot-email"
+                      type="email"
+                      placeholder="you@example.com"
+                      required
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      className="input-glow"
+                    />
+                  </div>
+                  {forgotError && (
+                    <div className="px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-sm text-destructive">
+                      {forgotError}
+                    </div>
+                  )}
+                  <Button type="submit" disabled={isSending} className="w-full gradient-btn py-3 rounded-xl">
+                    {isSending ? copy.sending : copy.sendLink}
+                  </Button>
+                  <button
+                    type="button"
+                    onClick={() => { setView('login'); setForgotError(null); setForgotEmail(''); }}
+                    className="w-full text-sm text-muted-foreground hover:text-foreground text-center"
+                  >
+                    ← {copy.backToLogin}
+                  </button>
+                </form>
+              )}
+            </>
+          )}
+
+          {/* ── LOGIN VIEW ── */}
+          {view === 'login' && (
+          <>
           <h2 className="text-xl font-bold text-foreground mb-6">
             {t(language, 'auth.signIn')}
           </h2>
@@ -106,12 +220,13 @@ export default function LoginPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">{t(language, 'auth.password')}</Label>
-                <a
-                  href="#"
+                <button
+                  type="button"
+                  onClick={() => { setView('forgot'); setError(null); }}
                   className="text-xs text-[#1A6BFF] hover:underline"
                 >
                   {t(language, 'auth.forgotPassword')}
-                </a>
+                </button>
               </div>
               <div className="relative">
                 <Input
@@ -218,6 +333,8 @@ export default function LoginPage() {
               {t(language, 'auth.createAccount')}
             </Link>
           </p>
+          </>
+          )}
         </motion.div>
       </div>
     </div>
