@@ -131,9 +131,18 @@ interface FoodItem { id: string; name: string; calories: number; protein: number
 const categories = ['All', 'Cardio', 'Strength', 'Recovery', 'Sports'];
 
 const exerciseCopy: Record<Language, Record<string, string>> = {
-  en: { quickLog: 'Quick log', closeForm: 'Close form', logWorkout: 'Log a workout', searchExercise: 'Search exercise...', logging: 'Logging...', addLift: 'Add lift', addCardio: 'Add cardio', logFood: 'Log Food', searchFood: 'Search food...', noMatch: 'No match found', logged: 'Logged!', saving: 'Saving…', logToDiary: 'Log to food diary', steps: 'Steps', addSteps: 'Add steps...', add: 'Add', session: 'Session', history: "Today's workout history", entries: 'entries', noWorkouts: 'No workouts logged yet', firstEntry: 'Use the quick log panel to add your first entry.' },
-  fr: { quickLog: 'Journal rapide', closeForm: 'Fermer', logWorkout: 'Enregistrer une séance', searchExercise: 'Rechercher un exercice...', logging: 'Enregistrement...', addLift: 'Ajouter la série', addCardio: 'Ajouter le cardio', logFood: 'Journal alimentaire', searchFood: 'Rechercher un aliment...', noMatch: 'Aucun résultat', logged: 'Enregistré !', saving: 'Enregistrement…', logToDiary: 'Ajouter au journal', steps: 'Pas', addSteps: 'Ajouter des pas...', add: 'Ajouter', session: 'Séance', history: "Historique d'entraînement du jour", entries: 'entrées', noWorkouts: 'Aucune séance enregistrée', firstEntry: 'Utilisez le panneau rapide pour ajouter votre première entrée.' },
-  ar: { quickLog: 'تسجيل سريع', closeForm: 'إغلاق', logWorkout: 'سجل تمريناً', searchExercise: 'ابحث عن تمرين...', logging: 'جارٍ التسجيل...', addLift: 'أضف الرفعة', addCardio: 'أضف الكارديو', logFood: 'سجل الطعام', searchFood: 'ابحث عن طعام...', noMatch: 'لا توجد نتيجة', logged: 'تم التسجيل!', saving: 'جارٍ الحفظ…', logToDiary: 'أضف لسجل الطعام', steps: 'الخطوات', addSteps: 'أضف خطوات...', add: 'إضافة', session: 'الجلسة', history: 'سجل تمارين اليوم', entries: 'إدخالات', noWorkouts: 'لا توجد تمارين مسجلة بعد', firstEntry: 'استخدم لوحة التسجيل السريع لإضافة أول تمرين.' },
+  en: { quickLog: 'Quick log', closeForm: 'Close form', logWorkout: 'Log a workout', searchExercise: 'Search exercise...', logging: 'Logging...', addLift: 'Add lift', addCardio: 'Add cardio', logFood: 'Log Food', searchFood: 'Search food...', noMatch: 'No match found', logged: 'Logged!', saving: 'Saving…', logToDiary: 'Log to food diary', steps: 'Steps', addSteps: 'Add steps...', add: 'Add', session: 'Session', history: "Today's workout history", entries: 'entries', noWorkouts: 'No workouts logged yet', firstEntry: 'Use the quick log panel to add your first entry.',
+    kicker: 'Training', heroHeading: 'A workout logger that tracks strength and cardio in one place.', heroSub: 'Log every lift with sets, reps, and weight, or track cardio by duration and calories burned.',
+    volume: 'Volume', kgLifted: 'kg lifted', burned: 'Burned', kcal: 'kcal', cardio: 'Cardio', min: 'min', stepsToday: 'today',
+    bestLift: "Today's best lift", estOneRm: 'Est. 1RM', strengthSets: 'Strength sets' },
+  fr: { quickLog: 'Journal rapide', closeForm: 'Fermer', logWorkout: 'Enregistrer une séance', searchExercise: 'Rechercher un exercice...', logging: 'Enregistrement...', addLift: 'Ajouter la série', addCardio: 'Ajouter le cardio', logFood: 'Journal alimentaire', searchFood: 'Rechercher un aliment...', noMatch: 'Aucun résultat', logged: 'Enregistré !', saving: 'Enregistrement…', logToDiary: 'Ajouter au journal', steps: 'Pas', addSteps: 'Ajouter des pas...', add: 'Ajouter', session: 'Séance', history: "Historique d'entraînement du jour", entries: 'entrées', noWorkouts: 'Aucune séance enregistrée', firstEntry: 'Utilisez le panneau rapide pour ajouter votre première entrée.',
+    kicker: 'Entraînement', heroHeading: 'Un journal de sport pour suivre force et cardio au même endroit.', heroSub: 'Enregistrez chaque série avec poids et répétitions, ou suivez le cardio par durée et calories.',
+    volume: 'Volume', kgLifted: 'kg soulevés', burned: 'Brûlées', kcal: 'kcal', cardio: 'Cardio', min: 'min', stepsToday: "aujourd'hui",
+    bestLift: 'Meilleure série du jour', estOneRm: '1RM estimé', strengthSets: 'Séries de force' },
+  ar: { quickLog: 'تسجيل سريع', closeForm: 'إغلاق', logWorkout: 'سجل تمريناً', searchExercise: 'ابحث عن تمرين...', logging: 'جارٍ التسجيل...', addLift: 'أضف الرفعة', addCardio: 'أضف الكارديو', logFood: 'سجل الطعام', searchFood: 'ابحث عن طعام...', noMatch: 'لا توجد نتيجة', logged: 'تم التسجيل!', saving: 'جارٍ الحفظ…', logToDiary: 'أضف لسجل الطعام', steps: 'الخطوات', addSteps: 'أضف خطوات...', add: 'إضافة', session: 'الجلسة', history: 'سجل تمارين اليوم', entries: 'إدخالات', noWorkouts: 'لا توجد تمارين مسجلة بعد', firstEntry: 'استخدم لوحة التسجيل السريع لإضافة أول تمرين.',
+    kicker: 'التدريب', heroHeading: 'سجل تمارينك — قوة وكارديو في مكان واحد.', heroSub: 'سجّل كل رفعة بالمجموعات والتكرارات والوزن، أو تابع الكارديو بالمدة والسعرات.',
+    volume: 'الحجم', kgLifted: 'كغ مرفوعة', burned: 'محروقة', kcal: 'سعرة', cardio: 'كارديو', min: 'دقيقة', stepsToday: 'اليوم',
+    bestLift: 'أفضل رفعة اليوم', estOneRm: 'الـ 1RM المقدّر', strengthSets: 'مجموعات قوة' },
 };
 
 export default function ExercisePage() {
@@ -306,33 +315,37 @@ export default function ExercisePage() {
         <section className="rounded-[2.2rem] border border-white/70 bg-white/78 p-5 shadow-[0_40px_120px_rgba(15,23,42,0.10)] backdrop-blur dark:border-white/10 dark:bg-slate-950/50 sm:p-7">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-600">Training</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-600">{copy.kicker}</p>
               <h1 className="mt-3 max-w-xl text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">
-                A workout logger that tracks strength and cardio in one place.
+                {copy.heroHeading}
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">
-                Log every lift with sets, reps, and weight, or track cardio by duration and calories burned.
+                {copy.heroSub}
               </p>
               <div className="mt-6 grid gap-3 sm:grid-cols-4">
-                <div className="rounded-[1.4rem] border border-violet-200/70 bg-white/88 p-4 dark:border-violet-500/20 dark:bg-violet-500/8">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">Volume</p>
+                <div className="relative overflow-hidden rounded-[1.4rem] border border-violet-200/60 bg-gradient-to-br from-violet-50 to-purple-50/60 p-4 dark:border-violet-500/20 dark:bg-gradient-to-br dark:from-violet-500/12 dark:to-purple-600/6">
+                  <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-violet-400/20 blur-xl" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600">{copy.volume}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{Math.round(totalStrengthVolume)}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">kg lifted</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.kgLifted}</p>
                 </div>
-                <div className="rounded-[1.4rem] border border-red-200/70 bg-white/88 p-4 dark:border-red-500/20 dark:bg-red-500/8">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-500">Burned</p>
+                <div className="relative overflow-hidden rounded-[1.4rem] border border-red-200/60 bg-gradient-to-br from-red-50 to-orange-50/60 p-4 dark:border-red-500/20 dark:bg-gradient-to-br dark:from-red-500/12 dark:to-orange-600/6">
+                  <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-red-400/20 blur-xl" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-500">{copy.burned}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{totalBurned}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">kcal</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.kcal}</p>
                 </div>
-                <div className="rounded-[1.4rem] border border-sky-200/70 bg-white/88 p-4 dark:border-sky-500/20 dark:bg-sky-500/8">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-600">Cardio</p>
+                <div className="relative overflow-hidden rounded-[1.4rem] border border-sky-200/60 bg-gradient-to-br from-sky-50 to-blue-50/60 p-4 dark:border-sky-500/20 dark:bg-gradient-to-br dark:from-sky-500/12 dark:to-blue-600/6">
+                  <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-sky-400/20 blur-xl" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-600">{copy.cardio}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{totalMinutes}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">min</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.min}</p>
                 </div>
-                <div className="rounded-[1.4rem] border border-emerald-200/70 bg-white/88 p-4 dark:border-emerald-500/20 dark:bg-emerald-500/8">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Steps</p>
+                <div className="relative overflow-hidden rounded-[1.4rem] border border-emerald-200/60 bg-gradient-to-br from-emerald-50 to-teal-50/60 p-4 dark:border-emerald-500/20 dark:bg-gradient-to-br dark:from-emerald-500/12 dark:to-teal-600/6">
+                  <div className="absolute -right-3 -top-3 h-14 w-14 rounded-full bg-emerald-400/20 blur-xl" />
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">{copy.steps}</p>
                   <p className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{currentSteps.toLocaleString()}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">today</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">{copy.stepsToday}</p>
                 </div>
               </div>
             </div>
@@ -343,18 +356,18 @@ export default function ExercisePage() {
                 </div>
                 <div className="space-y-3">
                   <div className="rounded-[1.3rem] border border-white/75 bg-white/88 p-4 dark:border-white/10 dark:bg-white/5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-600">Today&apos;s best lift</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-violet-600">{copy.bestLift}</p>
                     <p className="mt-2 text-2xl font-black text-slate-950 dark:text-white">{bestWeight > 0 ? `${bestWeight} kg` : '—'}</p>
                     <p className="text-xs text-slate-400">{selectedExercise.name}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="rounded-[1.1rem] border border-white/70 bg-white/86 p-3 text-center dark:border-white/10 dark:bg-white/5">
                       <p className="text-lg font-bold text-violet-600">{bestOneRm > 0 ? `${bestOneRm}` : '—'}</p>
-                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Est. 1RM</p>
+                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{copy.estOneRm}</p>
                     </div>
                     <div className="rounded-[1.1rem] border border-white/70 bg-white/86 p-3 text-center dark:border-white/10 dark:bg-white/5">
                       <p className="text-lg font-bold text-sky-600">{strengthLogs.length}</p>
-                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Strength sets</p>
+                      <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{copy.strengthSets}</p>
                     </div>
                   </div>
                 </div>

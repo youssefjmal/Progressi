@@ -155,7 +155,7 @@ const landingCopy: Record<Language, {
     heroBody: 'يجمع Progressi بين السعرات والماء والخطوات والتمارين والدردشة الصحية والتوصيات اليومية في تطبيق ويب واحد يعمل بسلاسة على الهاتف والكمبيوتر.',
     miniCards: [
       { label: 'السعرات اليومية', value: 'هدف ذكي', icon: FlameSafe },
-      { label: 'الترطيب', value: 'هدف الماء', icon: Droplets },
+      { label: 'مياه', value: 'هدف الماء', icon: Droplets },
       { label: 'الحركة', value: 'إرشاد الخطوات', icon: Footprints },
     ],
     coachMode: 'وضع المدرب',
