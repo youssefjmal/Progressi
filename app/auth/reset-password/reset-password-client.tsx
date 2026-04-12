@@ -4,8 +4,8 @@ import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -54,9 +54,11 @@ const copy = {
   },
 } as const;
 
+type Lang = keyof typeof copy;
+
 export default function ResetPasswordClient() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [lang, setLang] = useState<Lang>('en');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -66,20 +68,22 @@ export default function ResetPasswordClient() {
   const [success, setSuccess] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  const lang = (typeof window !== 'undefined'
-    ? (localStorage.getItem('language') as 'en' | 'fr' | 'ar') ?? 'en'
-    : 'en') as keyof typeof copy;
-  const c = copy[lang] ?? copy.en;
-  const supabase = useMemo(() => createClient(), []);
+  const c = copy[lang];
 
   useEffect(() => {
-    let active = true;
+    // Read language from localStorage (client-only)
+    const saved = localStorage.getItem('language') as Lang | null;
+    if (saved && saved in copy) setLang(saved);
+
+    const supabase = createClient();
 
     const prepareRecovery = async () => {
       try {
-        const code = searchParams.get('code');
-        const type = searchParams.get('type');
-        const tokenHash = searchParams.get('token_hash');
+        // Read URL params client-side to avoid useSearchParams/Suspense complexity
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const type = params.get('type');
+        const tokenHash = params.get('token_hash');
 
         if (code) {
           const { error } = await supabase.auth.exchangeCodeForSession(code);
@@ -87,56 +91,41 @@ export default function ResetPasswordClient() {
         } else if (tokenHash && type === 'recovery') {
           const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: 'recovery' });
           if (error) throw error;
-        } else if (typeof window !== 'undefined' && window.location.hash) {
+        } else if (window.location.hash) {
           const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
           const accessToken = hash.get('access_token');
           const refreshToken = hash.get('refresh_token');
           if (accessToken && refreshToken) {
-            const { error } = await supabase.auth.setSession({
-              access_token: accessToken,
-              refresh_token: refreshToken,
-            });
+            const { error } = await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
             if (error) throw error;
             window.history.replaceState({}, '', window.location.pathname);
           }
         }
 
         const { data } = await supabase.auth.getSession();
-        if (!data.session) throw new Error(c.invalidLink);
+        if (!data.session) throw new Error(copy.en.invalidLink);
 
-        if (active) {
-          setIsReady(true);
-          setError(null);
-        }
+        setIsReady(true);
+        setError(null);
       } catch (err: unknown) {
-        if (active) {
-          setError(err instanceof Error ? err.message : c.invalidLink);
-        }
+        setError(err instanceof Error ? err.message : copy.en.invalidLink);
       }
     };
 
     prepareRecovery();
-
-    return () => {
-      active = false;
-    };
-  }, [c.invalidLink, searchParams, supabase]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 8) {
-      setError(c.tooShort);
-      return;
-    }
-    if (password !== confirm) {
-      setError(c.mismatch);
-      return;
-    }
+    if (password.length < 8) { setError(c.tooShort); return; }
+    if (password !== confirm) { setError(c.mismatch); return; }
 
     setIsLoading(true);
     try {
+      const supabase = createClient();
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       setSuccess(true);
@@ -192,11 +181,8 @@ export default function ResetPasswordClient() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="input-glow pr-10"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  >
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
@@ -214,11 +200,8 @@ export default function ResetPasswordClient() {
                     onChange={(e) => setConfirm(e.target.value)}
                     className="input-glow pr-10"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  >
+                  <button type="button" onClick={() => setShowConfirm(!showConfirm)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                     {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
@@ -230,11 +213,7 @@ export default function ResetPasswordClient() {
                 </div>
               )}
 
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full gradient-btn py-3 rounded-xl"
-              >
+              <Button type="submit" disabled={isLoading} className="w-full gradient-btn py-3 rounded-xl">
                 {isLoading ? c.submitting : c.submit}
               </Button>
             </form>
