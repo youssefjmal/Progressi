@@ -44,7 +44,7 @@ const landingCopy: Record<Language, {
   en: {
     badge: 'Built for food, training, water, and recovery tracking',
     heroTitle: 'Track what your body needs, not just what you type into an app.',
-    heroBody: 'Progressi combines calorie intake, hydration, steps, workouts, health-focused chat, and daily recommendations into one responsive web app for phone and desktop.',
+    heroBody: 'wakelni combines calorie intake, hydration, steps, workouts, health-focused chat, and daily recommendations into one responsive web app for phone and desktop.',
     miniCards: [
       { label: 'Daily calories', value: 'Smart target', icon: FlameSafe },
       { label: 'Hydration', value: 'Water goal', icon: Droplets },
@@ -91,14 +91,14 @@ const landingCopy: Record<Language, {
     quickContact: 'Quick contact',
     contactPlaceholder: 'Your email',
     contactButton: 'Contact',
-    contactSubject: 'Progressi contact request',
-    contactBody: 'Hi, I would like to know more about Progressi.',
+    contactSubject: 'wakelni contact request',
+    contactBody: 'Hi, I would like to know more about wakelni.',
     copyright: 'All rights reserved.',
   },
   fr: {
     badge: "Conçu pour suivre l'alimentation, l'entraînement, l'eau et la récupération",
     heroTitle: 'Suivez les besoins de votre corps, pas seulement ce que vous tapez dans une application.',
-    heroBody: "Progressi réunit les calories, l'hydratation, les pas, les entraînements, le chat santé et les recommandations quotidiennes dans une seule application web responsive pour mobile et desktop.",
+    heroBody: "wakelni réunit les calories, l'hydratation, les pas, les entraînements, le chat santé et les recommandations quotidiennes dans une seule application web responsive pour mobile et desktop.",
     miniCards: [
       { label: 'Calories quotidiennes', value: 'Objectif intelligent', icon: FlameSafe },
       { label: 'Hydratation', value: "Objectif d'eau", icon: Droplets },
@@ -145,14 +145,14 @@ const landingCopy: Record<Language, {
     quickContact: 'Contact rapide',
     contactPlaceholder: 'Votre e-mail',
     contactButton: 'Contacter',
-    contactSubject: 'Demande de contact Progressi',
-    contactBody: 'Bonjour, je souhaite en savoir plus sur Progressi.',
+    contactSubject: 'Demande de contact wakelni',
+    contactBody: 'Bonjour, je souhaite en savoir plus sur wakelni.',
     copyright: 'Tous droits réservés.',
   },
   ar: {
     badge: 'مصمم لتتبع الأكل والتمرين والماء والتعافي',
     heroTitle: 'تابع ما يحتاجه جسمك، وليس فقط ما تكتبه داخل التطبيق.',
-    heroBody: 'يجمع Progressi بين السعرات والماء والخطوات والتمارين والدردشة الصحية والتوصيات اليومية في تطبيق ويب واحد يعمل بسلاسة على الهاتف والكمبيوتر.',
+    heroBody: 'يجمع wakelni بين السعرات والماء والخطوات والتمارين والدردشة الصحية والتوصيات اليومية في تطبيق ويب واحد يعمل بسلاسة على الهاتف والكمبيوتر.',
     miniCards: [
       { label: 'السعرات اليومية', value: 'هدف ذكي', icon: FlameSafe },
       { label: 'مياه', value: 'هدف الماء', icon: Droplets },
@@ -199,8 +199,8 @@ const landingCopy: Record<Language, {
     quickContact: 'تواصل سريع',
     contactPlaceholder: 'بريدك الإلكتروني',
     contactButton: 'تواصل',
-    contactSubject: 'طلب تواصل من Progressi',
-    contactBody: 'مرحباً، أود معرفة المزيد عن Progressi.',
+    contactSubject: 'طلب تواصل من wakelni',
+    contactBody: 'مرحباً، أود معرفة المزيد عن wakelni.',
     copyright: 'جميع الحقوق محفوظة.',
   },
 };
@@ -381,7 +381,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-7xl space-y-8">
           {/* Top row */}
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-            <span className="text-2xl font-extrabold text-[#1A6BFF]">Progressi</span>
+            <span className="text-2xl font-extrabold text-[#1A6BFF]">wakelni</span>
             <nav className="flex items-center gap-6 text-sm text-muted-foreground">
               <Link href="/auth/sign-up" className="transition-colors hover:text-foreground">{t(language, 'landing.ctaStart')}</Link>
               <Link href="/auth/login" className="transition-colors hover:text-foreground">{t(language, 'landing.ctaSignin')}</Link>
@@ -438,7 +438,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <p className="text-center text-xs text-slate-400">{`© ${new Date().getFullYear()} Progressi. ${copy.copyright}`}</p>
+          <p className="text-center text-xs text-slate-400">{`© ${new Date().getFullYear()} wakelni. ${copy.copyright}`}</p>
         </div>
       </footer>
     </div>

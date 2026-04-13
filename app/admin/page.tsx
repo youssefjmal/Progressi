@@ -250,7 +250,7 @@ export default function AdminPage() {
               <span className="rounded-full bg-red-500/12 px-3 py-0.5 text-[10px] font-bold uppercase tracking-[0.22em] text-red-600 dark:text-red-400">Admin</span>
               <Sparkles size={14} className="text-[#1A6BFF]" />
             </div>
-            <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900 dark:text-white">Progressi Admin</h1>
+            <h1 className="mt-1 text-3xl font-black tracking-tight text-slate-900 dark:text-white">wakelni Admin</h1>
             {lastRefresh && (
               <p className="mt-0.5 text-xs text-slate-400">Last updated {relativeTime(lastRefresh.toISOString())}</p>
             )}

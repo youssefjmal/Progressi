@@ -119,7 +119,7 @@ export function Sidebar() {
             <div className="absolute inset-0 rounded-xl ring-2 ring-[#1A6BFF]/30" />
           </div>
           <div>
-            <span className="text-[1.15rem] font-extrabold tracking-tight text-slate-900 dark:text-white">Progressi</span>
+            <span className="text-[1.15rem] font-extrabold tracking-tight text-slate-900 dark:text-white">wakelni</span>
             <p className="text-[10px] font-medium text-slate-400 leading-none mt-0.5">{copy.tagline}</p>
           </div>
         </div>
@@ -215,7 +215,7 @@ export function Sidebar() {
           </div>
         )}
 
-        <p className="mt-3 text-[10px] text-slate-300 dark:text-slate-600">© {new Date().getFullYear()} Progressi</p>
+        <p className="mt-3 text-[10px] text-slate-300 dark:text-slate-600">© {new Date().getFullYear()} wakelni</p>
       </div>
     </aside>
   );

@@ -45,7 +45,7 @@ export function TopNav() {
           href="/"
           className="text-xl font-extrabold text-[#1A6BFF] tracking-tight"
         >
-          Progressi
+          wakelni
         </Link>
 
         {/* Nav links */}

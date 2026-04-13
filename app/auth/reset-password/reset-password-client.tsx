@@ -141,7 +141,7 @@ export default function ResetPasswordClient() {
     <div className="min-h-screen flex items-center justify-center bg-[#F5F7FA] dark:bg-[#0A0A0F] px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-[#1A6BFF]">Progressi</h1>
+          <h1 className="text-3xl font-extrabold text-[#1A6BFF]">wakelni</h1>
           <p className="text-muted-foreground mt-2">{c.subtitle}</p>
         </div>
 

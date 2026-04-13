@@ -1,4 +1,4 @@
-# Progressi - Quick Start Guide
+# wakelni - Quick Start Guide
 
 ## What You Get
 
@@ -165,8 +165,8 @@ Edit `lib/i18n.ts` translation objects (en/fr)
 ### Via Docker
 
 ```bash
-docker build -t progressi .
-docker run -p 3000:3000 -e AI_GATEWAY_API_KEY=xxx progressi
+docker build -t wakelni .
+docker run -p 3000:3000 -e AI_GATEWAY_API_KEY=xxx wakelni
 ```
 
 ### Via Self-Hosted

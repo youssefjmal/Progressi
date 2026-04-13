@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
     const todayExercise = exerciseLogs.filter((l) => l.logged_at?.startsWith(today));
     const weekExercise = exerciseLogs;
 
-    const prompt = `You are Progressi, an expert AI fitness coach. Analyze this user's data and give them a SHORT daily feedback report.
+    const prompt = `You are wakelni, an expert AI fitness coach. Analyze this user's data and give them a SHORT daily feedback report.
 
 USER PROFILE:
 - Age: ${profile?.age ?? '?'}, Gender: ${profile?.gender ?? '?'}

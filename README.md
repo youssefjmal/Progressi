@@ -1,4 +1,4 @@
-# Progressi — AI Fitness Coach
+# wakelni — AI Fitness Coach
 
 A full-stack fitness tracking app built with Next.js 16, Supabase, and Groq AI. Tracks food, exercise, and weight with personalized AI coaching in English and French.
 
