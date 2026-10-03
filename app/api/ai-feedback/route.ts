@@ -100,7 +100,7 @@ Generate a structured daily feedback report in this EXACT JSON format (no markdo
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'openai/gpt-oss-120b',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 600,
         temperature: 0.4,
